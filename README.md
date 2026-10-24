@@ -100,7 +100,7 @@ src/
     config.ts     physics and world constants
     art/          original SVG sprites and their rasterization into textures
     entities/     LampPlayer, Platform, Collectible, WorldObjects (portal, gates, NPCs…)
-    levels/       level1–4.ts — levels as data
+    levels/       level1–12.ts — levels as data
     scenes/       BootScene, LevelScene (one scene builds any level from data)
     systems/      InputController, QuestionManager, ProgressManager, AudioManager, Speech
     world/        themes, parallax backgrounds, platform rendering
