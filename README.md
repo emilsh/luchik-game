@@ -1,158 +1,164 @@
 # Lamp Quest
 
-Обучающий браузерный платформер для детей 5–7 лет. Игрок управляет лампой Лучиком: проходит
-12 уровней в двух главах, собирает звёзды и решает задания на чтение, счёт, английские слова,
-закономерности, порядок событий и команды для робота.
+An educational browser platformer for children aged 5–7. The player controls Luchik the lamp:
+they play through 12 levels in two chapters, collect stars, and solve tasks on reading,
+counting, English words, patterns, event order, and commands for a robot.
 
-- **Глава 1. Свет долины** (уровни 1–4): Зелёная долина, Мост чисел, Английский лес, Мастерская.
-- **Глава 2. В поисках утраченного света** (уровни 5–12): Зачарованный лес, Кристальная пещера,
-  Небесные острова, Библиотека времени, Фабрика роботов, Ледяная гора, Подводный город,
-  Обсерватория света. Каждый уровень даёт осколок Кристалла Света; на 12-м уровне кристалл
-  собирается.
+- **Chapter 1. Light of the Valley** (levels 1–4): Green Valley, Bridge of Numbers, English
+  Forest, Workshop.
+- **Chapter 2. In Search of the Lost Light** (levels 5–12): Enchanted Forest, Crystal Cave,
+  Sky Islands, Library of Time, Robot Factory, Ice Mountain, Underwater City, Observatory of
+  Light. Each level gives one shard of the Crystal of Light; the crystal is assembled on
+  level 12.
 
-Стек: Vite 5, React 18, TypeScript, Phaser 3.80. Сервера нет, данные хранятся в `localStorage`.
+Stack: Vite 5, React 18, TypeScript, Phaser 3.80. There is no server; data is stored in
+`localStorage`.
 
-## Запуск на компьютере
+## Running on a computer
 
-Нужен Node.js 18 или новее (проверено на 20.11).
+Requires Node.js 18 or newer (tested on 20.11).
 
 ```bash
 npm install
 npm run dev
 ```
 
-Откройте http://localhost:5173.
+Open http://localhost:5173.
 
-### Как открыть на iPad в домашней сети
+### Opening on an iPad on your home network
 
-`npm run dev` запускает сервер с флагом `--host`, поэтому в терминале появится строка
-`Network: http://192.168.x.x:5173`. Откройте этот адрес в Safari на iPad (компьютер и iPad
-должны быть в одной Wi‑Fi-сети).
+`npm run dev` starts the server with the `--host` flag, so the terminal prints a line like
+`Network: http://192.168.x.x:5173`. Open that address in Safari on the iPad (the computer and
+the iPad must be on the same Wi‑Fi network).
 
-Чтобы играть на весь экран, в Safari нажмите «Поделиться» → «На экран Домой». Игра будет
-открываться с иконки без адресной строки.
+To play full screen, tap "Share" → "Add to Home Screen" in Safari. The game will then open
+from an icon without the address bar.
 
-Если звука нет, проверьте, что на iPad выключен беззвучный режим.
+If there is no sound, check that silent mode is off on the iPad.
 
-## Сборка для публикации
+## Building for publication
 
 ```bash
-npm run build      # проверка типов + сборка в папку dist/
-npm run preview    # локальная проверка собранной версии
+npm run build      # type check + build into the dist/ folder
+npm run preview    # local check of the built version
 ```
 
-Папка `dist/` — это готовый статический сайт. В сборке стоит `base: './'`, поэтому её можно
-положить в любую папку на любом статическом хостинге: GitHub Pages, Netlify, Vercel,
-Cloudflare Pages или просто на веб-сервер. Серверная часть не нужна. После загрузки игра
-не обращается ни к каким внешним сервисам.
+The `dist/` folder is a ready-made static site. The build uses `base: './'`, so it can be
+placed in any folder on any static hosting: GitHub Pages, Netlify, Vercel, Cloudflare Pages,
+or just a web server. No server-side code is needed. After loading, the game does not contact
+any external services.
 
-## Тесты
+## Tests
 
 ```bash
-npx playwright install chromium webkit   # один раз
+npx playwright install chromium webkit   # once
 npm run test:e2e
 ```
 
-Тесты собирают проект, запускают `vite preview` и проверяют игру в двух конфигурациях:
-настольный Chromium и эмуляция iPad (WebKit с поддержкой касаний).
+The tests build the project, start `vite preview`, and check the game in two configurations:
+desktop Chromium and iPad emulation (WebKit with touch support).
 
-- `tests/levels.spec.ts` — проверка данных без браузера. Для каждого уровня строится граф
-  поверхностей с учётом физики прыжка, батутов, потоков, лифтов и ворот, и уровень
-  «проходится» по данным: каждое задание, цель, звезда и портал должны быть достижимы.
-  Также проверяется однозначность заданий (программа робота, поиск ошибки, маршрут, примеры).
-  Запускайте этот файл после любого изменения уровней.
-- `tests/variants.spec.ts` — генератор заданий: все варианты корректны (12 уровней × 3 уровня
-  сложности × 40 зёрен), связаны между собой, разнообразны, не повторяются подряд, сложность
-  подстраивается.
-- `tests/replay.spec.ts` — в браузере: перезапуск и перезагрузка дают новые задания,
-  на экране — именно выпавший вариант, успехи записываются.
-- `tests/game.spec.ts` — меню, сохранение, управление и уровни 1–4.
-- `tests/chapter2.spec.ts` — миграция старых сохранений, переход 4 → 5, полное прохождение
-  уровней 5–12 (на каждой станции сначала неверный ответ), новые механики, пауза,
-  освобождение ресурсов.
+- `tests/levels.spec.ts` — data checks without a browser. For each level a graph of surfaces
+  is built, taking into account jump physics, trampolines, air currents, lifts, and gates, and
+  the level is "played through" using the data: every task, goal, star, and the portal must
+  be reachable. It also checks that tasks have a single unambiguous answer (robot program,
+  bug finding, route, arithmetic). Run this file after any change to the levels.
+- `tests/variants.spec.ts` — the task generator: all variants are valid (12 levels × 3
+  difficulty tiers × 40 seeds), consistent with each other, varied, never repeated back to
+  back, and the difficulty adapts.
+- `tests/replay.spec.ts` — in the browser: a restart and a page reload produce new tasks, the
+  screen shows exactly the variant that was drawn, and successes are recorded.
+- `tests/game.spec.ts` — menu, saving, controls, and levels 1–4.
+- `tests/chapter2.spec.ts` — migration of old saves, the 4 → 5 transition, a full
+  playthrough of levels 5–12 (with a wrong answer first at every station), the new
+  mechanics, pause, and resource cleanup.
 
-Если открыть игру с параметром `?debug` (`http://localhost:5173/?debug`), в консоли
-браузера будет доступен объект `window.__LQ`. Через него тесты читают состояние игры и
-перемещают лампу.
+If you open the game with the `?debug` parameter (`http://localhost:5173/?debug`), the
+`window.__LQ` object becomes available in the browser console. The tests use it to read the
+game state and move the lamp.
 
-## Управление
+## Controls
 
-| Действие | iPad | Клавиатура |
+| Action | iPad | Keyboard |
 | --- | --- | --- |
-| Идти | кнопки ◀ ▶ внизу слева (держать; можно вести пальцем с одной на другую) | ← → или A / D |
-| Прыжок | большая кнопка внизу справа | Пробел, ↑ или W |
-| Пауза | кнопка ⏸ | Esc |
+| Walk | ◀ ▶ buttons at the bottom left (hold; you can slide a finger from one to the other) | ← → or A / D |
+| Jump | large button at the bottom right | Space, ↑ or W |
+| Pause | ⏸ button | Esc |
 
-## Структура проекта
+## Project structure
 
 ```
 src/
-  app/            App.tsx (переключение экранов), routes.ts, useProgress.ts
-  components/     экраны и оверлеи React: меню, выбор уровня, игровой экран, HUD,
-                  сенсорные кнопки, карточка задания, пауза, завершение, коллекция,
-                  родительская панель
-  data/           questions.ts (все задания), vocabulary.ts, stories.ts, rewards.ts
+  app/            App.tsx (screen switching), routes.ts, useProgress.ts
+  components/     React screens and overlays: menu, level select, game screen, HUD,
+                  touch buttons, task card, pause, level complete, collection,
+                  parent dashboard
+  data/           questions.ts (all tasks), vocabulary.ts, stories.ts, rewards.ts
   game/
-    gameHost.ts   единственный экземпляр Phaser.Game (создание, ресайз, запуск уровней)
-    events.ts     шина событий Phaser ↔ React
-    config.ts     константы физики и мира
-    art/          SVG-спрайты (оригинальные) и их растеризация в текстуры
-    entities/     LampPlayer, Platform, Collectible, WorldObjects (портал, ворота, NPC…)
-    levels/       level1–4.ts — уровни как данные
-    scenes/       BootScene, LevelScene (одна сцена строит любой уровень из данных)
+    gameHost.ts   the single Phaser.Game instance (creation, resize, level launching)
+    events.ts     Phaser ↔ React event bus
+    config.ts     physics and world constants
+    art/          original SVG sprites and their rasterization into textures
+    entities/     LampPlayer, Platform, Collectible, WorldObjects (portal, gates, NPCs…)
+    levels/       level1–4.ts — levels as data
+    scenes/       BootScene, LevelScene (one scene builds any level from data)
     systems/      InputController, QuestionManager, ProgressManager, AudioManager, Speech
-    world/        темы, фоны с параллаксом, отрисовка платформ
-  storage/        saveManager.ts — чтение, проверка и запись сохранения
+    world/        themes, parallax backgrounds, platform rendering
+  storage/        saveManager.ts — reading, validating, and writing the save
   styles/         global.css, game.css
-  types/          game.ts — общие типы
-tests/            Playwright-тесты
+  types/          game.ts — shared types
+tests/            Playwright tests
 ```
 
-### Сохранение
+### Saving
 
-Ключ в `localStorage` — `lampquest.save.v1`. Формат версии 2 добавил 12 уровней, главы и
-осколки. Старые сохранения (версия 1) читаются и переносятся автоматически: прогресс,
-награды и статистика сохраняются, а после пройденного 4-го уровня открывается 5-й.
+The `localStorage` key is `lampquest.save.v1`. Format version 2 added 12 levels, chapters,
+and shards. Old saves (version 1) are read and migrated automatically: progress, rewards,
+and statistics are kept, and level 5 is unlocked once level 4 is completed.
 
-### Вариативные задания
+### Variable tasks
 
-Задания не повторяются при повторном прохождении. Задание на станции — это **слот**
-(`src/game/systems/variants/slots.ts`). Награда и эффект в мире у слота постоянные: мост,
-ворота, лифт. Содержимое собирается заново перед каждым запуском уровня.
+Tasks do not repeat when a level is played again. A task at a station is a **slot**
+(`src/game/systems/variants/slots.ts`). The reward and the effect on the world are fixed
+for the slot: bridge, gate, lift. The content is built anew before every level launch.
 
-- **Что меняется:** истории и записки (`banks.ts`), вопрос к истории, форма задания (пример,
-  задача словами, пропущенное число, «больше» или «меньше», два или три числа), правило
-  закономерности, карта маршрута, дорожка и ошибка в программе робота, английское слово
-  (только из уже показанных табличек), описание для поиска, порядок вариантов.
-- **Без повторов:** последние 4 варианта каждого слота хранятся в сохранении (`variantHistory`),
-  и генератор их избегает. Задание из предыдущего прохождения не повторяется никогда.
-- **Сложность 1–3** подбирается по навыку по последним ответам (`mastery`). Если ребёнок решает
-  с первой попытки — задание чуть сложнее, если нужны подсказки — проще. Числа никогда не
-  выходят за потолок уровня: 10 в главе 1, 15 на уровнях 5, 6, 10, 11, 20 на остальных.
-- **Связанные задания:** сосчитанные фонарики переходят в пример, второй шаг ворот продолжает
-  первый, два вопроса к одной истории задаются по одному тексту, робот-помощник проходит
-  программу ребёнка, машина собирается в порядке из инструкции.
-- **Проверка:** каждое созданное задание проходит валидатор (`validate.ts`); при ошибке
-  используется исходное задание из `src/data/questions.ts`.
-- **Повтор конкретного набора:** откройте игру с `?seed=N`, и задания будут те же.
+- **What changes:** stories and notes (`banks.ts`), the question about a story, the form of
+  the task (an equation, a word problem, a missing number, "more" or "less", two or three
+  numbers), the pattern rule, the route map, the track and the bug in the robot program, the
+  English word (only from the signs already shown), the description to search for, and the
+  order of the options.
+- **No repeats:** the last 4 variants of each slot are stored in the save (`variantHistory`),
+  and the generator avoids them. A task from the previous playthrough is never repeated.
+- **Difficulty 1–3** is chosen per skill from the most recent answers (`mastery`). If the
+  child solves tasks on the first try, the tasks get slightly harder; if hints are needed,
+  they get easier. Numbers never exceed the level's ceiling: 10 in chapter 1, 15 on levels
+  5, 6, 10, 11, and 20 on the rest.
+- **Linked tasks:** the lanterns that were counted carry over into the equation, the second
+  step of the gate continues the first, two questions about one story use the same text, the
+  helper robot runs the child's program, and the machine is assembled in the order from the
+  instruction.
+- **Validation:** every generated task goes through a validator (`validate.ts`); on failure,
+  the original task from `src/data/questions.ts` is used.
+- **Replaying a specific set:** open the game with `?seed=N` and the tasks will be the same.
 
-### Механики платформ (поле `kind` и другие поля `PlatformDef`)
+### Platform mechanics (the `kind` field and other `PlatformDef` fields)
 
-`ground`, `ledge`, `cloud`, `bridge`, `mushroom`, `crystal`, `shelf`, `books`, `island` — обычные;
-`bouncy` (батут, поле `bounce`), `ice` (лёд), `conveyor` (поле `conveyor` — скорость),
-`block` (твёрдый блок или потолок); `move: { dx }` или `move: { dy }` — едущая платформа или лифт;
-`showWhen` — платформа появляется после флага. Воздушные потоки — `winds`, робот-помощник —
-`helpers`, декор с вращением — `decor`, мягкая гравитация — `physics`.
+`ground`, `ledge`, `cloud`, `bridge`, `mushroom`, `crystal`, `shelf`, `books`, `island` —
+regular; `bouncy` (trampoline, `bounce` field), `ice` (ice), `conveyor` (the `conveyor` field
+is the speed), `block` (a solid block or ceiling); `move: { dx }` or `move: { dy }` — a moving
+platform or lift; `showWhen` — the platform appears after a flag is set. Air currents are
+`winds`, the helper robot is `helpers`, spinning decorations are `decor`, and soft gravity is
+`physics`.
 
-### Как добавить задание или уровень
+### How to add a task or a level
 
-- **Задание.** Добавьте объект в `src/data/questions.ts` и укажите его `id` в поле `questions`
-  у станции нужного уровня.
-- **Задание второй главы.** Типы: выбор ответа или картинки, порядок событий (`order`),
-  программа робота (`program`), поиск ошибки (`visual.kind = 'code'`), последовательность
-  (`sequence`), маршрут (`grid`), задача с энергией (`energy`), поиск предмета в мире
-  (станция `find`, по английскому слову или по описанию).
-- **Уровень.** Опишите его по образцу `src/game/levels/level5.ts`: платформы, звёзды, станции,
-  цели и портал. Затем добавьте его в `src/game/levels/index.ts` и в `src/data/chapters.ts`.
-  Отдельный игровой код для этого писать не нужно. После правок запустите
-  `npx playwright test tests/levels.spec.ts --project=desktop-chromium`.
+- **Task.** Add an object to `src/data/questions.ts` and put its `id` in the `questions`
+  field of the station on the desired level.
+- **Chapter 2 task.** Types: choosing an answer or a picture, event order (`order`), robot
+  program (`program`), bug finding (`visual.kind = 'code'`), sequence (`sequence`), route
+  (`grid`), energy problem (`energy`), finding an object in the world (a `find` station, by
+  English word or by description).
+- **Level.** Describe it following the example of `src/game/levels/level5.ts`: platforms,
+  stars, stations, goals, and the portal. Then add it to `src/game/levels/index.ts` and
+  `src/data/chapters.ts`. No separate game code needs to be written for it. After making
+  changes, run `npx playwright test tests/levels.spec.ts --project=desktop-chromium`.
