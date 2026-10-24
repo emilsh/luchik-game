@@ -1,0 +1,80 @@
+import type { LevelDef } from '../../types/game';
+import { LEVEL_INTROS } from '../../data/stories';
+
+// Зелёная долина: управление + чтение.
+export const level1: LevelDef = {
+  id: 1,
+  chapter: 1,
+  name: 'Зелёная долина',
+  subtitle: 'Учимся прыгать и читать',
+  emoji: '🌳',
+  theme: 'valley',
+  width: 6600,
+  spawn: { x: 260, y: 520 },
+  intro: LEVEL_INTROS[1],
+  platforms: [
+    { x: 0, y: 600, w: 1150 },
+    { x: 620, y: 500, w: 200, kind: 'ledge' },
+    { x: 1290, y: 600, w: 1610 },
+    // Лесенка к ключу
+    { x: 1700, y: 495, w: 180, kind: 'ledge' },
+    { x: 1960, y: 395, w: 180, kind: 'ledge' },
+    { x: 2220, y: 300, w: 220, kind: 'ledge' },
+    // За воротами
+    { x: 3040, y: 560, w: 260 },
+    { x: 3390, y: 480, w: 160, kind: 'ledge' },
+    { x: 3640, y: 420, w: 160, kind: 'ledge' },
+    { x: 3880, y: 600, w: 1060 },
+    { x: 4150, y: 490, w: 160, kind: 'ledge' },
+    // Облачный мостик улитки
+    { x: 5010, y: 540, w: 150, kind: 'cloud', showWhen: 'snail:0' },
+    { x: 5230, y: 480, w: 150, kind: 'cloud', showWhen: 'snail:0' },
+    { x: 5480, y: 520, w: 170, kind: 'cloud', showWhen: 'snail:1' },
+    { x: 5720, y: 600, w: 880 },
+  ],
+  stars: [
+    { x: 420, y: 545 }, { x: 520, y: 545 },
+    { x: 680, y: 445 }, { x: 760, y: 445 },
+    { x: 1220, y: 470 },
+    { x: 1450, y: 545 },
+    { x: 1790, y: 440 }, { x: 2050, y: 340 }, { x: 2270, y: 245 },
+    { x: 2850, y: 545 },
+    { x: 3170, y: 505 }, { x: 3470, y: 425 }, { x: 3720, y: 365 },
+    { x: 4020, y: 545 }, { x: 4230, y: 435 }, { x: 4400, y: 545 },
+    { x: 5085, y: 480 }, { x: 5305, y: 420 }, { x: 5565, y: 465 },
+    { x: 5900, y: 545 }, { x: 6000, y: 545 },
+  ],
+  items: [{ id: 'key', kind: 'key', x: 2380, y: 250, label: 'Золотой ключ!' }],
+  checkpoints: [
+    { x: 1360, y: 600 },
+    { x: 2780, y: 600 },
+    { x: 3950, y: 600 },
+    { x: 5800, y: 600 },
+  ],
+  gates: [{ id: 'gate', kind: 'hedge', x: 2650, y: 600, openWhen: 'gate' }],
+  stations: [
+    { type: 'hint', id: 'h-move', x: 300, y: 600, text: 'Стрелки ← → — идти', touchText: 'Нажимай ◀ ▶, чтобы идти' },
+    { type: 'hint', id: 'h-jump', x: 580, y: 600, text: 'Пробел или ↑ — прыжок!', touchText: 'Большая кнопка — прыжок!' },
+    { type: 'hint', id: 'h-gap', x: 1060, y: 600, text: 'Перепрыгни ямку! Упасть не страшно.' },
+    { type: 'quest', id: 'sign', npc: 'sign', x: 1530, y: 600, questions: ['l1-sign'] },
+    {
+      type: 'lock',
+      id: 'gate',
+      npc: 'keyhole',
+      x: 2560,
+      y: 600,
+      requires: ['item:key'],
+      requiresText: 'Ворота заперты. Нужен золотой ключ',
+      doneText: 'Ключ подошёл! Ворота открыты!',
+    },
+    { type: 'quest', id: 'snail', npc: 'snail', x: 4660, y: 600, questions: ['l1-snail-why', 'l1-snail-where'] },
+  ],
+  goals: [
+    { text: 'Прочитай табличку', emoji: '📜', done: ['sign'] },
+    { text: 'Найди золотой ключ', emoji: '🔑', done: ['item:key'] },
+    { text: 'Открой ворота', emoji: '🚪', done: ['gate'] },
+    { text: 'Помоги улитке Уле', emoji: '🐌', done: ['snail'] },
+  ],
+  portal: { x: 6300, y: 600, requires: ['snail'] },
+  reward: 'gold-star',
+};

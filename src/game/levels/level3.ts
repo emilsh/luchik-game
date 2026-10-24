@@ -1,0 +1,83 @@
+import type { LevelDef } from '../../types/game';
+import { LEVEL_INTROS } from '../../data/stories';
+
+// Английский лес: таблички со словами, Сова и поиск предмета по слову.
+export const level3: LevelDef = {
+  id: 3,
+  chapter: 1,
+  name: 'Английский лес',
+  subtitle: 'Первые английские слова',
+  emoji: '🦉',
+  theme: 'forest',
+  width: 6800,
+  spawn: { x: 260, y: 520 },
+  intro: LEVEL_INTROS[3],
+  platforms: [
+    { x: 0, y: 600, w: 1640 },
+    // Волшебные грибы к обрыву
+    { x: 1440, y: 495, w: 110, kind: 'mushroom', showWhen: 'owl1:0' },
+    { x: 1530, y: 420, w: 110, kind: 'mushroom', showWhen: 'owl1:1' },
+    { x: 1640, y: 330, w: 1300 },
+    { x: 1950, y: 225, w: 160, kind: 'ledge' },
+    { x: 2500, y: 225, w: 160, kind: 'ledge' },
+    { x: 2940, y: 600, w: 700 },
+    { x: 3800, y: 600, w: 1500 },
+    // Кристальный мостик
+    { x: 5360, y: 540, w: 140, kind: 'crystal', showWhen: 'owl2:0' },
+    { x: 5560, y: 480, w: 140, kind: 'crystal', showWhen: 'owl2:0' },
+    { x: 5770, y: 530, w: 160, kind: 'crystal', showWhen: 'owl2:1' },
+    { x: 6000, y: 600, w: 800 },
+  ],
+  stars: [
+    { x: 420, y: 545 }, { x: 660, y: 545 }, { x: 900, y: 545 }, { x: 1120, y: 545 },
+    { x: 1495, y: 440 }, { x: 1585, y: 365 },
+    { x: 1760, y: 275 }, { x: 2030, y: 170 }, { x: 2250, y: 275 }, { x: 2580, y: 170 }, { x: 2850, y: 275 },
+    { x: 3100, y: 545 }, { x: 3420, y: 545 }, { x: 3720, y: 470 },
+    { x: 4280, y: 480 }, { x: 4530, y: 480 },
+    { x: 5050, y: 545 },
+    { x: 5430, y: 485 }, { x: 5630, y: 425 }, { x: 5850, y: 475 },
+    { x: 6150, y: 545 },
+  ],
+  items: [],
+  checkpoints: [
+    { x: 1720, y: 330 },
+    { x: 3000, y: 600 },
+    { x: 3860, y: 600 },
+    { x: 6060, y: 600 },
+  ],
+  gates: [{ id: 'vines', kind: 'vines', x: 4900, y: 600, openWhen: 'apple' }],
+  stations: [
+    { type: 'word', id: 'w-cat', x: 520, y: 600, word: 'CAT' },
+    { type: 'word', id: 'w-dog', x: 760, y: 600, word: 'DOG' },
+    { type: 'word', id: 'w-sun', x: 1000, y: 600, word: 'SUN' },
+    { type: 'word', id: 'w-star', x: 1220, y: 600, word: 'STAR' },
+    { type: 'quest', id: 'owl1', npc: 'owl', x: 1370, y: 600, questions: ['l3-star', 'l3-cat'] },
+    { type: 'word', id: 'w-moon', x: 1840, y: 330, word: 'MOON' },
+    { type: 'word', id: 'w-fish', x: 2130, y: 330, word: 'FISH' },
+    { type: 'word', id: 'w-apple', x: 2420, y: 330, word: 'APPLE' },
+    { type: 'word', id: 'w-book', x: 2720, y: 330, word: 'BOOK' },
+    {
+      type: 'find',
+      id: 'apple',
+      npc: 'firefly',
+      x: 3940,
+      y: 600,
+      question: 'l3-find-apple',
+      pedestals: [
+        { x: 4180, y: 600 },
+        { x: 4420, y: 600 },
+        { x: 4660, y: 600 },
+      ],
+    },
+    { type: 'word', id: 'w-tree', x: 5010, y: 600, word: 'TREE' },
+    { type: 'quest', id: 'owl2', npc: 'owl', x: 5200, y: 600, questions: ['l3-moon', 'l3-fish'] },
+  ],
+  goals: [
+    { text: 'Ответь Сове', emoji: '🦉', done: ['owl1'] },
+    { text: 'Найди светлячка', emoji: '✨', done: ['apple:active'] },
+    { text: 'Найди:', emoji: '🔎', done: ['apple'], question: 'l3-find-apple' },
+    { text: 'Ответь Сове ещё раз', emoji: '🦉', done: ['owl2'] },
+  ],
+  portal: { x: 6450, y: 600, requires: ['owl2'] },
+  reward: 'magic-crystal',
+};

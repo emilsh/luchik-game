@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 160" width="150" height="160">
+      <ellipse cx="70" cy="155" rx="44" ry="5" fill="#000" opacity="0.15"/>
+      <g transform="translate(35 128)">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5FD0D6"/>
+      <stop offset="1" stop-color="#2D7F97"/>
+    </linearGradient>
+  </defs>
+  <path d="M4 24 C6 7 64 7 66 24 Z" fill="url(#base)" stroke="#1F5A70" stroke-width="2"/>
+  <rect x="1" y="21" width="68" height="7" rx="3.5" fill="#24607A"/>
+  <ellipse cx="24" cy="14" rx="10" ry="3" fill="#FFFFFF" opacity="0.4"/>
+  <circle cx="52" cy="17" r="2.6" fill="#FFE26B"/>
+  <circle cx="35" cy="9" r="5" fill="#2D4A60"/>
+  <circle cx="35" cy="9" r="2" fill="#9FB7CC"/>
+</g>
+      <path d="M70 137 L54 96 L86 62" stroke="#3E5C76" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M70 137 L54 96 L86 62" stroke="#7FA3C2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.5 -1)"/>
+      <circle cx="54" cy="96" r="6.5" fill="#2D4A60"/>
+      <circle cx="54" cy="96" r="2.5" fill="#9FB7CC"/>
+      <g transform="translate(68 22) rotate(10 18 40)">
+  <defs>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC75F"/>
+      <stop offset="0.55" stop-color="#FF8A3D"/>
+      <stop offset="1" stop-color="#E5582A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.4" cy="0.5" r="0.7">
+      <stop offset="0" stop-color="#FFFFF0"/>
+      <stop offset="0.6" stop-color="#FFF1A6"/>
+      <stop offset="1" stop-color="#FFC94A"/>
+    </radialGradient>
+  </defs>
+  <path d="M22 13 C6 15 4 49 22 51 L66 60 C76 52 76 14 66 6 Z" fill="url(#shade)" stroke="#C4461F" stroke-width="2.5" stroke-linejoin="round"/>
+  <ellipse cx="67" cy="33" rx="7" ry="26" fill="url(#glow)" stroke="#D9622B" stroke-width="2.5"/>
+  <ellipse cx="66" cy="33" rx="3.5" ry="15" fill="#FFFFFF" opacity="0.85"/>
+  <path d="M24 16 C34 12 46 10 58 9" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.55" fill="none"/>
+  <ellipse cx="44" cy="44" rx="5.5" ry="3" fill="#FF5E7E" opacity="0.45"/>
+  <circle cx="18" cy="40" r="6" fill="#2D4A60"/>
+  <circle cx="18" cy="40" r="2.5" fill="#9FB7CC"/>
+
+  <circle cx="36" cy="30" r="7.5" fill="#FFFFFF" stroke="#4A2A1A" stroke-width="1.5"/>
+  <circle cx="50" cy="28" r="8" fill="#FFFFFF" stroke="#4A2A1A" stroke-width="1.5"/>
+  <circle cx="38.5" cy="30.5" r="4" fill="#2B2440"/>
+  <circle cx="52.5" cy="28.5" r="4.2" fill="#2B2440"/>
+  <circle cx="39.8" cy="29" r="1.5" fill="#FFFFFF"/>
+  <circle cx="53.8" cy="27" r="1.6" fill="#FFFFFF"/>
+  <path d="M40 42 Q44 46 48 42" stroke="#4A2A1A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+</g>
+    </svg>

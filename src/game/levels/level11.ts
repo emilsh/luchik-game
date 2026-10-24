@@ -1,0 +1,97 @@
+import type { LevelDef } from '../../types/game';
+import { LEVEL_INTROS } from '../../data/stories';
+
+// 11. Подводный город: английские слова, чтение записки, жемчужины и сложение.
+// Новые механики — плавучая физика (мягкая гравитация), пузырьковый поток и тоннели.
+export const level11: LevelDef = {
+  id: 11,
+  chapter: 2,
+  name: 'Подводный город',
+  subtitle: 'Английские слова под водой',
+  emoji: '🐢',
+  theme: 'underwater',
+  portrait: 'turtle',
+  width: 8000,
+  spawn: { x: 260, y: 520 },
+  intro: LEVEL_INTROS[11],
+  physics: { gravityScale: 0.5, jumpScale: 0.75, fallScale: 0.5 },
+  platforms: [
+    { x: 0, y: 600, w: 1600 },
+    { x: 1830, y: 300, w: 1300 },
+    { x: 3130, y: 600, w: 1800 },
+    { x: 3250, y: 480, w: 120, kind: 'ledge' },
+    // Тоннель: потолок, на который можно забраться
+    { x: 3400, y: 380, w: 500, h: 60, kind: 'block' },
+    // Подъёмник из ракушек
+    { x: 4800, y: 300, w: 130, kind: 'ledge', move: { dy: 260, speed: 55 }, showWhen: 'blue' },
+    { x: 4930, y: 300, w: 1200 },
+    { x: 6130, y: 600, w: 1870 },
+  ],
+  stars: [
+    { x: 1450, y: 480 }, { x: 1720, y: 420 }, { x: 1720, y: 320 },
+    { x: 2050, y: 245 }, { x: 3050, y: 245 },
+    { x: 3310, y: 425 }, { x: 3500, y: 325 }, { x: 3800, y: 325 }, { x: 3650, y: 545 },
+    { x: 4100, y: 545 }, { x: 4400, y: 545 }, { x: 4865, y: 400 },
+    { x: 5100, y: 245 }, { x: 5600, y: 245 }, { x: 6400, y: 545 }, { x: 6900, y: 545 }, { x: 7200, y: 545 },
+  ],
+  items: [
+    { id: 'pe1', kind: 'pearl', x: 350, y: 550, label: 'Жемчужина!' },
+    { id: 'pe2', kind: 'pearl', x: 2200, y: 250, label: 'Жемчужина!' },
+    { id: 'pe3', kind: 'pearl', x: 3650, y: 330, label: 'Жемчужина!' },
+    { id: 'pe4', kind: 'pearl', x: 4250, y: 550, label: 'Жемчужина!' },
+    { id: 'pe5', kind: 'pearl', x: 5300, y: 250, label: 'Жемчужина!' },
+  ],
+  checkpoints: [
+    { x: 1890, y: 300 },
+    { x: 3190, y: 600 },
+    { x: 4990, y: 300 },
+    { x: 6200, y: 600 },
+  ],
+  gates: [{ id: 'citygate', kind: 'crystal', x: 2980, y: 300, openWhen: 'key' }],
+  winds: [{ x: 1610, w: 210, bottom: 720, top: 240, activeWhen: 't1' }],
+  stations: [
+    { type: 'hint', id: 'h-swim', x: 300, y: 600, text: 'Под водой прыжки мягкие и долгие' },
+    { type: 'word', id: 'w-shell', x: 520, y: 600, word: 'SHELL' },
+    { type: 'word', id: 'w-water', x: 740, y: 600, word: 'WATER' },
+    { type: 'word', id: 'w-boat', x: 960, y: 600, word: 'BOAT' },
+    { type: 'word', id: 'w-blue', x: 1180, y: 600, word: 'BLUE' },
+    { type: 'word', id: 'w-green', x: 1400, y: 600, word: 'GREEN' },
+    { type: 'quest', id: 't1', npc: 'turtle', x: 1530, y: 600, questions: ['l11-fish', 'l11-water'] },
+    {
+      type: 'find',
+      id: 'key',
+      npc: 'turtle',
+      x: 1980,
+      y: 300,
+      question: 'l11-key',
+      pedestalStyle: 'ground',
+      pedestals: [
+        { x: 2250, y: 300 },
+        { x: 2500, y: 300 },
+        { x: 2750, y: 300 },
+      ],
+    },
+    { type: 'quest', id: 'blue', npc: 'turtle', x: 4500, y: 600, questions: ['l11-blue'] },
+    {
+      type: 'quest',
+      id: 'pearls',
+      npc: 'turtle',
+      x: 5850,
+      y: 300,
+      questions: ['l11-pearls'],
+      requires: ['item:pe1', 'item:pe2', 'item:pe3', 'item:pe4', 'item:pe5'],
+      requiresText: 'Найди 5 жемчужин',
+    },
+  ],
+  goals: [
+    { text: 'Ответь Черепахе', emoji: '🐢', done: ['t1'] },
+    { text: 'Прочитай записку и найди ключ', emoji: '🔑', done: ['key'] },
+    { text: 'Найди BLUE', emoji: '🔵', done: ['blue'] },
+    { text: 'Собери жемчужины', emoji: '⚪', done: ['item:pe1', 'item:pe2', 'item:pe3', 'item:pe4', 'item:pe5'] },
+    { text: 'Посчитай жемчуг с Черепахой', emoji: '🐢', done: ['pearls'] },
+  ],
+  portal: { x: 7600, y: 600, requires: ['pearls'] },
+  reward: 'shard-7',
+  finaleFlag: 'pearls',
+  finaleText: 'Подводный город засиял! Портал открыт',
+};

@@ -1,0 +1,10 @@
+{
+  "name": "Lamp Quest",
+  "short_name": "Lamp Quest",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#7ec8f5",
+  "theme_color": "#7ec8f5",
+  "start_url": "./",
+  "icons": [{ "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }]
+}
