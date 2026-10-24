@@ -11,7 +11,7 @@ import {
   trackErrors,
 } from './helpers';
 
-// Повторные прохождения: задания меняются, история сохраняется, сложность учитывается.
+// Repeated playthroughs: tasks change, history is saved, difficulty is taken into account.
 
 const ALL = Array.from({ length: 12 }, (_, i) => i + 1);
 const save = (extra: Record<string, unknown> = {}) =>
@@ -30,7 +30,7 @@ test('при каждом новом прохождении задания др�
   const runs = [await runVariants(page)];
   await restart(page);
   runs.push(await runVariants(page));
-  // Перезагрузка страницы: история вариантов берётся из сохранения.
+  // Page reload: the variant history is taken from the save.
   await page.reload();
   await startLevel(page, 2);
   runs.push(await runVariants(page));
@@ -46,7 +46,7 @@ test('на экране — именно выпавший вариант: кар
   await openGame(page, save());
   await startLevel(page, 3);
   const q = await runtimeQuestion(page, 'l3-find-apple');
-  // Цели идут по порядку: сначала «Ответь Сове».
+  // Goals go in order: first "Answer the Owl".
   await page.evaluate(() => (window as unknown as { __LQ: { setFlag: (f: string) => void } }).__LQ.setFlag('owl1'));
   await teleport(page, 3940, 540);
   await expect(page.getByTestId('find-card')).toContainText(q.word as string);
@@ -62,9 +62,9 @@ test('успехи ребёнка запоминаются для подбора
   await openGame(page, save());
   await startLevel(page, 6);
   await teleport(page, 1180, 540);
-  await answerOpenCard(page, false); // замок: с первой попытки
+  await answerOpenCard(page, false); // lock: on the first try
   await teleport(page, 1580, 540);
-  await answerOpenCard(page, true); // рычаг: сначала ошибка
+  await answerOpenCard(page, true); // lever: a mistake first
   const stored = await page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? '{}'), SAVE_KEY);
   expect(stored.mastery.addition).toEqual([1]);
   expect(stored.mastery.comparison).toEqual([0]);

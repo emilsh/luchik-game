@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// base: './' — сборку можно положить в любую папку статического хостинга.
+// base: './' — the build can be placed in any folder of a static host.
 export default defineConfig({
   base: './',
   plugins: [react()],

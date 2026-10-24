@@ -79,7 +79,7 @@ button:focus-visible {
   touch-action: pan-y;
 }
 
-/* ---------- Кнопки ---------- */
+/* ---------- Buttons ---------- */
 
 .btn {
   display: inline-flex;
@@ -177,7 +177,7 @@ button:focus-visible {
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
 }
 
-/* ---------- Небо меню ---------- */
+/* ---------- Menu sky ---------- */
 
 .menu-sky {
   position: absolute;
@@ -230,7 +230,7 @@ button:focus-visible {
   }
 }
 
-/* ---------- Главное меню ---------- */
+/* ---------- Main menu ---------- */
 
 .menu-content {
   position: relative;
@@ -346,7 +346,7 @@ button:focus-visible {
   color: var(--ink-soft);
 }
 
-/* ---------- Выбор уровня ---------- */
+/* ---------- Level select ---------- */
 
 .screen-title {
   position: relative;
@@ -467,7 +467,7 @@ button:focus-visible {
   }
 }
 
-/* ---------- Коллекция ---------- */
+/* ---------- Collection ---------- */
 
 .collection-screen > *:not(.menu-sky) {
   position: relative;
@@ -590,7 +590,7 @@ button:focus-visible {
   }
 }
 
-/* ---------- Родительская панель ---------- */
+/* ---------- Parent dashboard ---------- */
 
 .parents-screen {
   background: #f4f1ea;
@@ -704,7 +704,7 @@ button:focus-visible {
   }
 }
 
-/* ---------- Карта мира ---------- */
+/* ---------- World map ---------- */
 
 .chapter-tabs {
   position: relative;

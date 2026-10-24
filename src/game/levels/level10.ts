@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 10. Ледяная гора: сравнение, задачи в несколько действий, связанные примеры.
-// Новые механики — скользкий лёд (мягкий разгон и торможение) и тающие ворота.
+// 10. Ice Mountain: comparison, multi-step problems, linked equations.
+// New mechanics — slippery ice (softer acceleration and braking) and melting gates.
 export const level10: LevelDef = {
   id: 10,
   chapter: 2,
@@ -17,17 +17,17 @@ export const level10: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1500 },
     { x: 500, y: 500, w: 260, kind: 'ice' },
-    // Ледяной мост после выбора пути
+    // Ice bridge after choosing a path
     { x: 1500, y: 600, w: 250, kind: 'ice', showWhen: 'path' },
     { x: 1750, y: 600, w: 250, kind: 'ice', showWhen: 'path' },
     { x: 2000, y: 600, w: 1400 },
     { x: 2320, y: 500, w: 160, kind: 'ledge' },
-    // Ступеньки после задачи про энергию
+    // Steps after the energy problem
     { x: 3420, y: 495, w: 140, kind: 'ledge', showWhen: 'energy' },
     { x: 3580, y: 400, w: 120, kind: 'ledge', showWhen: 'energy' },
     { x: 3700, y: 360, w: 1200 },
     { x: 4900, y: 600, w: 3300 },
-    // Длинная ледяная дорожка
+    // Long ice track
     { x: 5200, y: 600, w: 600, kind: 'ice' },
     { x: 5500, y: 490, w: 160, kind: 'ledge' },
   ],

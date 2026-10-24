@@ -6,15 +6,15 @@ import { DEPTH } from '../world/background';
 import type { Theme } from '../world/themes';
 
 /**
- * Платформа: визуал + тело. Земля сталкивается со всех сторон, остальные
- * платформы — только сверху (можно запрыгнуть снизу сквозь них).
+ * Platform: visual + body. Ground collides from all sides, the other
+ * platforms only from above (you can jump up through them from below).
  */
 export class Platform {
   readonly visual: Phaser.GameObjects.Container;
   readonly textureKeys: string[];
-  /** Статическое тело (для неподвижных платформ). */
+  /** Static body (for non-moving platforms). */
   readonly zone: Phaser.GameObjects.Zone | null = null;
-  /** Подвижное тело (для едущих платформ). */
+  /** Moving body (for moving platforms). */
   readonly mover: Phaser.Physics.Arcade.Image | null = null;
   shown: boolean;
   private h: number;
@@ -73,7 +73,7 @@ export class Platform {
     if (body) body.enable = on;
   }
 
-  /** Появление платформы с анимацией (после решённого задания). */
+  /** Platform appearance with animation (after a solved task). */
   reveal(delay = 0): void {
     if (this.shown) return;
     this.shown = true;
@@ -104,7 +104,7 @@ export class Platform {
     this.scene.time.delayedCall(delay + 1200, () => p.destroy());
   }
 
-  /** Движение туда-обратно (по горизонтали или вертикали). */
+  /** Back-and-forth movement (horizontal or vertical). */
   update(): void {
     const m = this.mover;
     const mv = this.def.move;
@@ -123,7 +123,7 @@ export class Platform {
     }
   }
 
-  /** Визуал едущей платформы следует за телом (после шага физики). */
+  /** The visual of a moving platform follows its body (after the physics step). */
   sync(): void {
     if (this.mover) {
       const b = this.mover.body as Phaser.Physics.Arcade.Body;
@@ -132,7 +132,7 @@ export class Platform {
     }
   }
 
-  /** Текущая верхняя поверхность (у лифтов меняется). */
+  /** Current top surface (changes for lifts). */
   get top(): number {
     return this.mover ? (this.mover.body as Phaser.Physics.Arcade.Body).y : this.def.y;
   }
@@ -141,7 +141,7 @@ export class Platform {
     return this.mover ? (this.mover.body as Phaser.Physics.Arcade.Body).x : this.def.x;
   }
 
-  /** Стоит ли лампа на этой платформе (ноги у верхней грани, по x внутри). */
+  /** Whether the lamp stands on this platform (feet at the top edge, x inside). */
   supports(x: number, feetY: number): boolean {
     if (!this.shown) return false;
     const l = this.left;

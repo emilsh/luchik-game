@@ -5,15 +5,15 @@ import { makeRng } from './rng';
 import { SLOTS } from './slots';
 import { validateQuestion } from './validate';
 
-// Сборка заданий уровня на одно прохождение: сложность по навыку, без повторов
-// недавних вариантов, с проверкой каждого задания.
+// Assembling a level's tasks for one playthrough: difficulty per skill, no repeats
+// of recent variants, with every task validated.
 
 export { validateQuestion } from './validate';
 export type { Tier } from './builders';
 
 /**
- * Сложность навыка 1–3. Опора — номер уровня (на первых уровнях проще),
- * поправка — последние ответы: решает с первой попытки — сложнее, нужны подсказки — проще.
+ * Skill difficulty 1–3. The baseline is the level number (easier on the first levels),
+ * the adjustment is the latest answers: solves on the first try — harder, needs hints — easier.
  */
 export function tierFor(levelId: number, recent: number[]): Tier {
   let t = levelId <= 2 ? 1 : 2;
@@ -28,13 +28,13 @@ export function tierFor(levelId: number, recent: number[]): Tier {
 
 export interface LevelVariants {
   questions: Record<string, QuestionDef>;
-  /** Ключ выбранного варианта для каждого слота. */
+  /** Key of the chosen variant for each slot. */
   keys: Record<string, string>;
 }
 
 export function buildLevelQuestions(opts: {
   levelId: number;
-  /** Задания уровня в порядке прохождения (связанные идут после своих «источников»). */
+  /** The level's tasks in playthrough order (linked ones come after their "sources"). */
   ids: string[];
   seed: number;
   mastery: Partial<Record<SkillType, number[]>>;
@@ -73,10 +73,10 @@ export function buildLevelQuestions(opts: {
       };
       if (v.key.endsWith(':fallback') || validateQuestion(q).length > 0) continue;
       if (!recent.includes(v.key)) chosen = q;
-      // Запасной вариант (если банк маленький) — любой, кроме выпавшего в прошлый раз.
+      // Fallback (if the bank is small) — any variant except the one drawn last time.
       else if (v.key !== last) fallback ??= q;
     }
-    // Если все варианты недавно были (маленький банк) — берём любой корректный; если нет и его — исходное задание.
+    // If all variants were recent (a small bank), take any valid one; failing that, the original task.
     const q = chosen ?? fallback ?? { ...base, meta: { variant: 'base', tier } };
     questions[id] = q;
     keys[id] = q.meta?.variant ?? 'base';

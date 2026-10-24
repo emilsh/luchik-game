@@ -1,5 +1,5 @@
-// Синтезированные звуки через Web Audio API — без аудиофайлов.
-// Контекст создаётся только после первого касания/нажатия (требование Safari).
+// Synthesized sounds via the Web Audio API — no audio files.
+// The context is created only after the first touch/keypress (a Safari requirement).
 
 export type Sfx =
   | 'jump'
@@ -26,7 +26,7 @@ interface ToneOpts {
 
 const midi = (n: number) => 440 * Math.pow(2, (n - 69) / 12);
 
-// Мелодия главного меню: восьмые ноты, null — пауза.
+// Main menu melody: eighth notes, null — a rest.
 const MELODY: (number | null)[] = [
   72, 76, 79, 76, 74, 72, 74, null,
   72, 76, 79, 81, 79, 76, 74, null,
@@ -46,7 +46,7 @@ class AudioManager {
   private musicStep = 0;
   private nextNoteTime = 0;
 
-  /** Вызывается из обработчика жеста пользователя. */
+  /** Called from a user gesture handler. */
   unlock(): void {
     try {
       if (!this.ctx) {
@@ -123,7 +123,7 @@ class AudioManager {
         );
         break;
       case 'wrong':
-        // Мягкий «хм» — без резких звуков.
+        // A soft "hm" — no harsh sounds.
         this.tone(392, 0.18, { vol: 0.08 });
         this.tone(330, 0.26, { vol: 0.08, delay: 0.14 });
         break;
@@ -157,7 +157,7 @@ class AudioManager {
     }
   }
 
-  // ---------- Музыка ----------
+  // ---------- Music ----------
 
   startMusic(): void {
     this.musicWanted = true;

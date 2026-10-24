@@ -5,16 +5,16 @@ import type { Rng } from './rng';
 import { cap, plural, SMALL_MASC, type Noun } from './ru';
 import { BUTTON_ACC, COLOR_BUTTONS, type OrderEntry, type StoryEntry } from './banks';
 
-// Строители вариативных заданий. Каждый возвращает ключ варианта (для истории
-// повторов) и поля задания, которые накладываются на базовое определение слота
-// (id, навык и награда-эффект в мире остаются прежними).
+// Builders of variable tasks. Each returns a variant key (for the history
+// of repeats) and task fields that are layered over the slot's base definition
+// (id, skill, and the reward effect in the world stay the same).
 
 export type Tier = 1 | 2 | 3;
 
 export interface Ctx {
   rng: Rng;
   tier: Tier;
-  /** Уже созданные в этом прохождении задания уровня — для связанных вопросов. */
+  /** Tasks of the level already created in this playthrough — for linked questions. */
   resolved: Record<string, QuestionDef>;
 }
 
@@ -25,7 +25,7 @@ export interface Variant {
 
 const num = (v: number): AnswerOption => ({ id: String(v), label: String(v) });
 
-/** Верный ответ и два близких неверных (±1, ±2), в пределах [lo, hi], в случайном порядке. */
+/** The correct answer and two close wrong ones (±1, ±2), within [lo, hi], in random order. */
 export function numberOptions(rng: Rng, correct: number, lo: number, hi: number, n = 3): AnswerOption[] {
   const set = new Set([correct]);
   const near = [...rng.shuffle([correct - 1, correct + 1]), ...rng.shuffle([correct - 2, correct + 2]), correct + 3, correct - 3];
@@ -36,7 +36,7 @@ export function numberOptions(rng: Rng, correct: number, lo: number, hi: number,
   return rng.shuffle([...set]).map(num);
 }
 
-// ---------- Счёт ----------
+// ---------- Counting ----------
 
 export function countQ(ctx: Ctx, o: { nouns: Noun[]; ranges: Record<Tier, [number, number]>; max: number }): Variant {
   const { rng, tier } = ctx;
@@ -57,7 +57,7 @@ export function countQ(ctx: Ctx, o: { nouns: Noun[]; ranges: Record<Tier, [numbe
   };
 }
 
-// ---------- Сравнение ----------
+// ---------- Comparison ----------
 
 export function compareQ(
   ctx: Ctx,
@@ -98,15 +98,15 @@ export function compareQ(
   };
 }
 
-// ---------- Сложение и вычитание ----------
+// ---------- Addition and subtraction ----------
 
 export interface ArithOpts {
   op: '+' | '-';
   max: number;
   nouns: Noun[];
-  /** Первое число задано заранее (связанное задание или собранные предметы). */
+  /** The first number is given in advance (a linked task or collected items). */
   fixedA?: number;
-  /** Сюжетная формулировка для обычной формы; без неё — набор общих формулировок. */
+  /** A story wording for the regular form; without it, a set of generic wordings. */
   frame?: (a: number, b: number) => string;
 }
 
@@ -126,7 +126,7 @@ export function arithQ(ctx: Ctx, o: ArithOpts): Variant {
     b = rng.int(Math.min(2, bMax), bMax);
   }
   const r = o.op === '+' ? a + b : a - b;
-  // Высокая сложность: пропущено второе число (3 + ? = 7). Связанные задания оставляем в обычной форме.
+  // High difficulty: the second number is missing (3 + ? = 7). Linked tasks stay in the regular form.
   const unknownB = tier === 3 && o.fixedA === undefined && rng.chance(0.6);
   const sym = o.op === '+' ? '+' : '−';
   const answer = unknownB ? b : r;
@@ -146,7 +146,7 @@ export function arithQ(ctx: Ctx, o: ArithOpts): Variant {
         : `Было ${a} ${plural(a, noun.forms)}. Убрали ${b}. Сколько осталось?`;
   } else {
     style = 'plain';
-    prompt = 'Сколько получится?'; // сам пример крупно показан над вопросом
+    prompt = 'Сколько получится?'; // the equation itself is shown large above the question
   }
   const hint = unknownB
     ? o.op === '+'
@@ -171,7 +171,7 @@ export function arithQ(ctx: Ctx, o: ArithOpts): Variant {
   };
 }
 
-// ---------- Энергия: задача в одно или два действия ----------
+// ---------- Energy: a problem in one or two steps ----------
 
 export function energyQ(
   ctx: Ctx,
@@ -209,7 +209,7 @@ export function energyQ(
   };
 }
 
-// ---------- Закономерности ----------
+// ---------- Patterns ----------
 
 export function numberSeqQ(ctx: Ctx, o: { max: number }): Variant {
   const { rng, tier } = ctx;
@@ -271,7 +271,7 @@ export function patternQ(ctx: Ctx, o: { sets?: string[][] } = {}): Variant {
   };
 }
 
-// ---------- Английский ----------
+// ---------- English ----------
 
 const others = (rng: Rng, pool: string[], exclude: string[], n: number) =>
   rng.shuffle(pool.filter((w) => !exclude.includes(w))).slice(0, n);
@@ -322,7 +322,7 @@ export function pictureToWordQ(ctx: Ctx, o: { targets: string[]; pool: string[];
   };
 }
 
-/** Поиск предмета в мире: всегда 3 варианта — по числу постаментов. */
+/** Finding an item in the world: always 3 options — one per pedestal. */
 export function findWordQ(ctx: Ctx, o: { targets: string[]; pool: string[]; avoid?: string[] }): Variant {
   const { rng } = ctx;
   const choices = o.targets.filter((w) => !(o.avoid ?? []).includes(w));
@@ -355,7 +355,7 @@ export function colorQ(ctx: Ctx): Variant {
   const { rng, tier } = ctx;
   const W = rng.pick(['BLUE', 'GREEN']);
   const other = W === 'BLUE' ? 'GREEN' : 'BLUE';
-  // На низкой сложности отвлекающие предметы явно другого цвета; выше — есть и «соседний» цвет.
+  // At low difficulty the distractors are clearly a different color; higher up there is also a "neighboring" color.
   const distractColors = tier === 1 ? rng.shuffle(['red', 'yellow', 'orange']).slice(0, 2) : [other, rng.pick(['red', 'yellow', 'orange'])];
   const right = rng.pick(COLOR_ITEMS[W]);
   const wrong = distractColors.map((c) => rng.pick(COLOR_ITEMS[c]));
@@ -375,11 +375,11 @@ export function colorQ(ctx: Ctx): Variant {
   };
 }
 
-// ---------- Чтение ----------
+// ---------- Reading ----------
 
 /**
- * Вопрос по истории из банка. Вторая станция-вопрос той же истории передаёт
- * sameAs — тогда история та же, а вопрос другой.
+ * A question about a story from the bank. The second question station of the same story passes
+ * sameAs — then the story is the same, but the question is different.
  */
 export function storyQ(ctx: Ctx, o: { bank: StoryEntry[]; sameAs?: string; avoidStory?: string }): Variant {
   const { rng, tier } = ctx;
@@ -389,7 +389,7 @@ export function storyQ(ctx: Ctx, o: { bank: StoryEntry[]; sameAs?: string; avoid
     rng.pick(o.bank.filter((e) => e.key !== o.avoidStory).length ? o.bank.filter((e) => e.key !== o.avoidStory) : o.bank);
   const used = prev?.prompt;
   let pool = entry.questions.filter((q) => q.prompt !== used);
-  // Низкая сложность — сначала вопросы, ответ на которые прямо в тексте; высокая — «почему?».
+  // Low difficulty — questions whose answer is right in the text first; high — "why?".
   if (!prev) {
     const preferred = pool.filter((q) => (tier === 1 ? q.kind === 'literal' : tier === 3 ? q.kind === 'cause' : true));
     if (preferred.length) pool = preferred;
@@ -409,7 +409,7 @@ export function storyQ(ctx: Ctx, o: { bank: StoryEntry[]; sameAs?: string; avoid
   };
 }
 
-/** «Расставь по порядку»: история из банка или (на высокой сложности) кнопки в произвольном порядке. */
+/** "Put in order": a story from the bank or (at high difficulty) buttons in arbitrary order. */
 export function orderQ(ctx: Ctx, o: { bank: OrderEntry[]; avoidSameAs?: string; buttons?: boolean }): Variant {
   const { rng, tier } = ctx;
   const avoid = o.avoidSameAs ? ctx.resolved[o.avoidSameAs]?.meta?.storyKey : undefined;
@@ -429,7 +429,7 @@ export function orderQ(ctx: Ctx, o: { bank: OrderEntry[]; avoidSameAs?: string; 
 
 function finishOrder(rng: Rng, key: string, story: string[], steps: AnswerOption[], hint: string, storyKey?: string): Variant {
   let opts = rng.shuffle(steps);
-  // Карточки никогда не лежат сразу в правильном порядке.
+  // The cards are never already in the correct order.
   while (opts.every((s, i) => s.id === steps[i].id)) opts = rng.shuffle(steps);
   return {
     key,
@@ -452,7 +452,7 @@ const PARTS = [
   { id: 'bulb', emoji: '💡', acc: 'лампочку', label: 'Лампочку' },
 ];
 
-/** Уровень 4: инструкция по сборке — порядок деталей и вопрос меняются. */
+/** Level 4: assembly instructions — the order of parts and the question change. */
 export function instructionQ(ctx: Ctx): Variant {
   const { rng, tier } = ctx;
   const order = rng.shuffle(PARTS);
@@ -474,7 +474,7 @@ export function instructionQ(ctx: Ctx): Variant {
   };
 }
 
-// ---------- Логика: цвет и форма ----------
+// ---------- Logic: color and shape ----------
 
 interface Stone {
   emoji: string;
@@ -524,7 +524,7 @@ export function logicQ(ctx: Ctx): Variant {
     const bad = STONES.filter((s) => !test(s));
     if (good.length === 0 || bad.length < 2) continue;
     const right = rng.pick(good);
-    // Неверные — «почти подходящие»: совпадают с верным по одному признаку.
+    // Wrong ones are "almost right": they match the correct one in a single attribute.
     const near = bad.filter((s) => s.color === right.color || s.shape === right.shape);
     const wrongPool = near.length >= 2 ? near : bad;
     const wrong = rng.shuffle(wrongPool).slice(0, 2);
@@ -543,7 +543,7 @@ export function logicQ(ctx: Ctx): Variant {
   return { key: 'logic:fallback', q: {} };
 }
 
-// ---------- Маршрут по карте ----------
+// ---------- Route on the map ----------
 
 type Cell = [number, number];
 
@@ -588,7 +588,7 @@ export function routeQ(ctx: Ctx): Variant {
       storms.add(rng.pick(blockable));
     }
     if (storms.size === 0) continue;
-    // Средняя и высокая сложность — больше туч на карте (только вне верной дорожки).
+    // Medium and high difficulty — more clouds on the map (only off the correct path).
     const extra = tier === 1 ? 0 : tier === 2 ? 1 : 2;
     const free: string[] = [];
     for (let r = 0; r < rows; r++)
@@ -619,13 +619,13 @@ export function routeQ(ctx: Ctx): Variant {
   return { key: 'route:fallback', q: {} };
 }
 
-// ---------- Программы для робота ----------
+// ---------- Robot programs ----------
 
 function makeTrack(rng: Rng, len: number, pits: number): string | null {
   const cells = Array(len).fill('.');
   cells[0] = 'R';
   cells[len - 1] = 'G';
-  const spots = rng.shuffle(Array.from({ length: len - 3 }, (_, i) => i + 2)); // не рядом со стартом и не на флажке
+  const spots = rng.shuffle(Array.from({ length: len - 3 }, (_, i) => i + 2)); // not next to the start and not on the flag
   let placed = 0;
   for (const i of spots) {
     if (placed >= pits) break;
@@ -636,7 +636,7 @@ function makeTrack(rng: Rng, len: number, pits: number): string | null {
   return placed === pits ? cells.join('') : null;
 }
 
-/** Кратчайшая программа: идём вперёд, перед ямой прыгаем. */
+/** Shortest program: go forward, jump before a pit. */
 export function greedyProgram(track: string): RobotCmd[] {
   const prog: RobotCmd[] = [];
   let pos = track.indexOf('R');
@@ -660,7 +660,7 @@ export function programQ(ctx: Ctx): Variant {
     if (!track) continue;
     const solution = greedyProgram(track);
     if (!runProgram(track, solution).success) continue;
-    // Ровно столько ячеек, сколько шагов в кратчайшей программе: так решение однозначно по длине.
+    // Exactly as many slots as steps in the shortest program: this makes the solution unambiguous in length.
     const program: ProgramDef = { track, slots: solution.length, solution };
     return {
       key: `prog:${track}`,
@@ -684,9 +684,9 @@ export function debugQ(ctx: Ctx): Variant {
     const track = makeTrack(rng, len, tier === 1 ? 1 : tier === 2 ? rng.pick([1, 2]) : 2);
     if (!track) continue;
     const good = greedyProgram(track);
-    if (good.length !== 3) continue; // ровно три команды — не больше трёх вариантов ответа
-    // Ошибка — одна неверная команда: «вперёд» вместо прыжка или лишний прыжок.
-    // На низкой сложности — только пропущенный прыжок (робот падает в яму, это нагляднее).
+    if (good.length !== 3) continue; // exactly three commands — at most three answer options
+    // The bug is one wrong command: "forward" instead of a jump, or an extra jump.
+    // At low difficulty — only a missed jump (the robot falls into a pit, which is clearer).
     const candidates = good.map((_, i) => i).filter((i) => tier > 1 || good[i] === 'jump');
     const bugAt = rng.pick(candidates);
     const buggy = good.map((c, i) => (i === bugAt ? toggle(c) : c));
@@ -709,11 +709,11 @@ export function debugQ(ctx: Ctx): Variant {
   return { key: 'debug:fallback', q: {} };
 }
 
-// ---------- Поиск по описанию ----------
+// ---------- Finding by description ----------
 
 const NUM_WORD = (n: number) => SMALL_MASC[n] ?? String(n);
 
-/** Уровень 5: дом светлячка — дерево, цвет и число цветов. Каждый неверный вариант отличается одним признаком. */
+/** Level 5: the firefly's home — a tree, a color, and the number of flowers. Each wrong option differs by one attribute. */
 export function homeDescQ(ctx: Ctx): Variant {
   const { rng, tier } = ctx;
   const TREES = [
@@ -732,7 +732,7 @@ export function homeDescQ(ctx: Ctx): Variant {
   const otherTree = TREES.find((t) => t !== tree) ?? tree;
   const otherFlower = rng.pick(FLOWERS.filter((f) => f !== flower));
   const otherN = n === 2 ? 3 : n - 1;
-  // Низкая сложность: отличие по дереву и цвету; выше — по числу цветов (нужно посчитать).
+  // Low difficulty: the difference is in the tree and color; higher — in the number of flowers (they must be counted).
   const wrongA = make(otherTree, flower, n);
   const wrongB = tier === 1 ? make(tree, otherFlower, n) : make(tree, flower, otherN);
   const right = make(tree, flower, n);
@@ -755,7 +755,7 @@ export function homeDescQ(ctx: Ctx): Variant {
   };
 }
 
-/** Уровень 8: книга по описанию — тема и цвет обложки. */
+/** Level 8: a book by description — the topic and the cover color. */
 export function bookDescQ(ctx: Ctx): Variant {
   const { rng, tier } = ctx;
   const TOPICS = [
@@ -801,7 +801,7 @@ export function bookDescQ(ctx: Ctx): Variant {
   };
 }
 
-/** Уровень 11: где спрятан ключ — тайник и что рядом. */
+/** Level 11: where the key is hidden — the hiding place and what is nearby. */
 export function keyDescQ(ctx: Ctx): Variant {
   const { rng } = ctx;
   const HIDES = [

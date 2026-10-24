@@ -94,7 +94,7 @@ export class LevelScene extends Phaser.Scene {
   private portal!: Portal;
   private respawnPoint = { x: 0, y: 0 };
   private starCount = 0;
-  /** Мир «на паузе»: открыта карточка, вступление или финальная сцена. */
+  /** The world is "paused": a card, an intro, or the final scene is open. */
   private modal = true;
   private completed = false;
   private respawning = false;
@@ -205,7 +205,7 @@ export class LevelScene extends Phaser.Scene {
     bus.off(EV.QUESTION_CLOSED, this.onQuestionClosed, this);
     bus.off(EV.FIND_ACCEPT, this.onFindAccept, this);
     bus.off(EV.LEVEL_START, this.onLevelStart, this);
-    // Текстуры платформ создаются на каждый запуск — освобождаем память.
+    // Platform textures are created on every launch — free the memory.
     const keys = this.textureKeys;
     window.setTimeout(() => keys.forEach((k) => this.textures.exists(k) && this.textures.remove(k)), 0);
   }
@@ -217,7 +217,7 @@ export class LevelScene extends Phaser.Scene {
     this.backdrop.layout(cam);
   }
 
-  // ---------- Создание станций ----------
+  // ---------- Creating stations ----------
 
   private createStation(def: StationDef): void {
     const rt: StationRt = { def, halfW: 70, inside: false };
@@ -259,7 +259,7 @@ export class LevelScene extends Phaser.Scene {
     this.stations.push(rt);
   }
 
-  // ---------- Игровой цикл ----------
+  // ---------- Game loop ----------
 
   update(_time: number, deltaMs: number): void {
     const dt = Math.min(deltaMs, 50) / 1000;
@@ -268,7 +268,7 @@ export class LevelScene extends Phaser.Scene {
     if (this.completed) return;
     const px = this.player.x;
     const feet = this.player.feetY;
-    // Особые поверхности (лёд, конвейер, батут) важнее обычной земли под ними.
+    // Special surfaces (ice, conveyor, trampoline) take priority over the ordinary ground beneath them.
     const under = this.player.onGround
       ? this.specialPlatforms.find((p) => p.supports(px, feet)) ?? this.platforms.find((p) => p.supports(px, feet))
       : undefined;
@@ -346,7 +346,7 @@ export class LevelScene extends Phaser.Scene {
     cam.setFollowOffset(-this.lookAhead, 0);
   }
 
-  // ---------- Потоки, декор, помощники ----------
+  // ---------- Currents, decor, helpers ----------
 
   private createWind(def: WindDef): void {
     const underwater = this.theme.id === 'underwater';
@@ -374,7 +374,7 @@ export class LevelScene extends Phaser.Scene {
     w.fx.start();
   }
 
-  /** Поток поднимает лампу плавно и предсказуемо до верхней границы. */
+  /** The current lifts the lamp smoothly and predictably up to the upper bound. */
   private applyWinds(dt: number): void {
     const b = this.player.body;
     for (const w of this.winds) {
@@ -404,7 +404,7 @@ export class LevelScene extends Phaser.Scene {
     this.tweens.add({ targets: rt.img, angle: 360, duration: (360 / rt.def.spin) * 1000, repeat: -1 });
   }
 
-  /** Робот-помощник проходит свой маршрут: шаги и прыжки — как в программе. */
+  /** The helper robot walks its route: steps and jumps — as in the program. */
   private runHelper(h: HelperRt): void {
     h.started = true;
     const steps = h.def.fromProgram ? this.programPath(h.def) : h.def.path;
@@ -435,8 +435,8 @@ export class LevelScene extends Phaser.Scene {
   }
 
   /**
-   * Маршрут помощника по программе, которую составил ребёнок: старт дорожки —
-   * текущее место робота, флажок — последняя точка path (кнопка ворот).
+   * The helper's route from the program the child built: the track start is
+   * the robot's current position, the flag is the last point of path (the gate button).
    */
   private programPath(def: HelperDef): HelperDef['path'] {
     const q = questions.get(def.fromProgram as string);
@@ -456,7 +456,7 @@ export class LevelScene extends Phaser.Scene {
     if (!this.player.isAnimatingPortal) this.player.syncVisual(this.lastDt);
   }
 
-  // ---------- Станции ----------
+  // ---------- Stations ----------
 
   private onEnterStation(st: StationRt): void {
     const def = st.def;
@@ -464,7 +464,7 @@ export class LevelScene extends Phaser.Scene {
       case 'hint': {
         const text = isTouchDevice() && def.touchText ? def.touchText : def.text;
         this.toast({ text, emoji: '💡', kind: 'info' });
-        st.halfW = -1; // показываем один раз
+        st.halfW = -1; // show only once
         break;
       }
       case 'word': {
@@ -531,7 +531,7 @@ export class LevelScene extends Phaser.Scene {
     if (def.questions.every((_, i) => this.flags.has(`${def.id}:${i}`))) {
       this.setFlag(def.id);
     } else {
-      // Следующее задание этой станции — после того как ребёнок увидит изменение мира.
+      // The next task of this station — after the child sees the change in the world.
       this.time.delayedCall(1500, () => {
         if (st.inside && !this.modal && !this.completed) this.openQuestion(st);
       });
@@ -581,7 +581,7 @@ export class LevelScene extends Phaser.Scene {
     const def = p.station;
     if (this.flags.has(def.id) || !this.flags.has(`${def.id}:active`)) return;
     const q = questions.get(def.question);
-    // Английские предметы озвучиваем и называем; для поиска по описанию — только подсказка.
+    // English items are voiced and named; for search by description — only a hint.
     const v = VOCABULARY[p.optionId];
     const opt = q.options.find((o) => o.id === p.optionId);
     const res = questions.answer(q.id, p.optionId);
@@ -600,7 +600,7 @@ export class LevelScene extends Phaser.Scene {
     }
   }
 
-  // ---------- Флаги и изменения мира ----------
+  // ---------- Flags and world changes ----------
 
   private setFlag(flag: string): void {
     if (this.flags.has(flag)) return;
@@ -653,12 +653,12 @@ export class LevelScene extends Phaser.Scene {
     }
   }
 
-  /** Машина уровня 4: детали встают по инструкции, затем машина оживает. */
+  /** Level 4 machine: parts slot in following the instructions, then the machine comes alive. */
   private updateMachine(st: StationRt): void {
     const parts = st.parts ?? [];
     const id = st.def.id;
     if (this.flags.has(`${id}:0`) && parts[0] && parts[0].alpha === 0 && !parts[0].getData('anim')) {
-      // Детали встают в том порядке, который был в инструкции этого прохождения.
+      // Parts slot in in the order given in the instructions of this playthrough.
       const def = st.def as QuestStation;
       const order = questions.get(def.questions[0]).meta?.partsOrder ?? MACHINE_PARTS;
       parts.forEach((p, i) => {
@@ -715,7 +715,7 @@ export class LevelScene extends Phaser.Scene {
     this.time.delayedCall(2600, () => this.setModal(false));
   }
 
-  /** Финал главы: восемь осколков слетаются в центральный кристалл. */
+  /** End of the chapter: eight shards fly together into the central crystal. */
   private shardsFlyInto(target: Phaser.GameObjects.Image): void {
     const cx = target.x;
     const cy = target.y - (target.displayHeight * 0.55);
@@ -743,7 +743,7 @@ export class LevelScene extends Phaser.Scene {
     this.tweens.add({ targets: target, scale: target.scale * 1.15, delay: 1800, duration: 400, yoyo: true });
   }
 
-  // ---------- Падение, портал, пауза ----------
+  // ---------- Falling, portal, pause ----------
 
   private respawnPlayer(): void {
     this.respawning = true;
@@ -812,7 +812,7 @@ export class LevelScene extends Phaser.Scene {
     bus.emit(EV.TOAST, t);
   }
 
-  // ---------- Отладка и автотесты ----------
+  // ---------- Debug and autotests ----------
 
   private installDebugHooks(): void {
     let enabled = false;
@@ -854,7 +854,7 @@ export class LevelScene extends Phaser.Scene {
 
 const MACHINE_PARTS = ['gear', 'spring', 'bulb'];
 
-/** Все задания уровня в порядке станций (связанные вопросы — после своих «источников»). */
+/** All tasks of a level in station order (linked questions — after their "sources"). */
 function levelQuestionIds(level: LevelDef): string[] {
   return level.stations.flatMap((s) => (s.type === 'quest' ? s.questions : s.type === 'find' ? [s.question] : []));
 }

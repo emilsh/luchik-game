@@ -14,8 +14,8 @@ const approach = (v: number, target: number, step: number) =>
   v < target ? Math.min(v + step, target) : Math.max(v - step, target);
 
 /**
- * Лампа Лучик. Физика — невидимое тело Arcade; внешний вид — контейнер
- * из основания, шарнирной шеи (рисуется каждый кадр) и абажура с глазами.
+ * Luchik the lamp. Physics is an invisible Arcade body; the look is a container
+ * of a base, a hinged neck (redrawn every frame), and a lamp shade with eyes.
  */
 export class LampPlayer {
   readonly sprite: Phaser.Physics.Arcade.Image;
@@ -33,7 +33,7 @@ export class LampPlayer {
   private lastGroundedAt = -Infinity;
   private wasGrounded = false;
   private airTime = 0;
-  // Пружина «сжатия/растяжения»
+  // Squash-and-stretch spring
   private squash = 1;
   private squashVel = 0;
   private runPhase = 0;
@@ -105,7 +105,7 @@ export class LampPlayer {
     return this.body.blocked.down || this.body.touching.down;
   }
 
-  /** Управление — вызывается в update сцены. */
+  /** Controls — called in the scene's update. */
   update(dt: number, surface: Surface = {}): void {
     const b = this.body;
     const now = performance.now();
@@ -114,18 +114,18 @@ export class LampPlayer {
 
     let dir = 0;
     if (!this.frozen) dir = (input.right ? 1 : 0) - (input.left ? 1 : 0);
-    // Конвейер добавляет плавный снос, лампа всё равно может идти против него.
+    // A conveyor adds a gentle drift; the lamp can still walk against it.
     const drift = grounded ? (surface.conveyor ?? 0) : 0;
     const target = dir * PHYS.runSpeed + drift;
     let accel: number;
     if (dir !== 0) {
       accel = grounded ? PHYS.accelGround : PHYS.accelAir;
-      // Разворот — быстрее, чтобы управление ощущалось отзывчивым.
+      // Turning around is faster so the controls feel responsive.
       if (Math.sign(b.velocity.x) === -dir) accel *= 1.6;
     } else {
       accel = grounded ? PHYS.decelGround : PHYS.decelAir;
     }
-    // Лёд: та же скорость, но мягче разгон и торможение — скольжение предсказуемое.
+    // Ice: same speed, but softer acceleration and braking — the slide is predictable.
     if (grounded && surface.ice) accel *= dir !== 0 ? 0.55 : 0.2;
     b.setVelocityX(approach(b.velocity.x, target, accel * dt));
     if (dir !== 0) this.facing = dir;
@@ -164,14 +164,14 @@ export class LampPlayer {
     this.scene.time.delayedCall(600, () => p.destroy());
   }
 
-  /** Внешний вид — вызывается после шага физики. */
+  /** Appearance — called after the physics step. */
   syncVisual(dt: number): void {
     this.time += dt;
     const b = this.body;
     const grounded = this.onGround;
     const speedRatio = Math.min(1, Math.abs(b.velocity.x) / PHYS.runSpeed);
 
-    // Пружина сжатия: в воздухе тянется вверх, на земле возвращается к 1.
+    // Squash spring: stretches up in the air, returns to 1 on the ground.
     let target = 1;
     if (!grounded) target = b.velocity.y < 0 ? 1.12 : 1.04;
     else target = 1 + Math.sin(this.time * 2.4) * 0.025 * (1 - speedRatio);
@@ -179,7 +179,7 @@ export class LampPlayer {
     this.squash += this.squashVel * dt;
     const s = Phaser.Math.Clamp(this.squash, 0.6, 1.4);
 
-    // Походка — лампа подпрыгивает на основании.
+    // Walk cycle — the lamp hops on its base.
     let hop = 0;
     if (grounded && speedRatio > 0.1) {
       this.runPhase += dt * 15 * speedRatio;
@@ -196,7 +196,7 @@ export class LampPlayer {
 
     this.base.setScale((f / TEX_RES) * (1 + (1 - s) * 0.25), (1 / TEX_RES) * (1 - (1 - s) * 0.35));
 
-    // Шея: нижнее плечо отклонено назад, верхнее — вперёд.
+    // Neck: the lower arm leans back, the upper arm forward.
     const lean = grounded ? speedRatio * 0.25 : Phaser.Math.Clamp(-b.velocity.y / 2000, -0.2, 0.25);
     const j0x = 0;
     const j0y = -19 * (1 - (1 - s) * 0.35);
@@ -220,7 +220,7 @@ export class LampPlayer {
     g.fillStyle(0x2d4a60, 1).fillCircle(ex, ey, 6.5);
     g.fillStyle(0x9fb7cc, 1).fillCircle(ex, ey, 2.5);
 
-    // Голова: наклон вниз, при прыжке смотрит вверх, при беге — вперёд.
+    // Head: tilts down; looks up when jumping, forward when running.
     let headAngle = 0.16 + Math.sin(this.time * 1.7) * 0.03;
     if (!grounded) headAngle = b.velocity.y < 0 ? -0.15 : 0.25;
     else if (speedRatio > 0.1) headAngle = 0.05 + Math.sin(this.runPhase * 2) * 0.05;
@@ -260,7 +260,7 @@ export class LampPlayer {
         g.fillStyle(0xffffff, 1).fillCircle(px + 1.3, py - 1.5, r * 0.2);
       }
     }
-    // Улыбка
+    // Smile
     g.lineStyle(1.8, 0x4a2a1a, 1);
     g.beginPath();
     g.arc(44 - HEAD_PIVOT.x, 40 - HEAD_PIVOT.y, 4, 0.3, Math.PI - 0.3);
@@ -274,7 +274,7 @@ export class LampPlayer {
     this.squash = 0.8;
   }
 
-  /** Анимация входа в портал. */
+  /** Animation of entering the portal. */
   enterPortal(px: number, py: number, onDone: () => void): void {
     this.frozen = true;
     this.body.setVelocity(0, 0);
@@ -292,7 +292,7 @@ export class LampPlayer {
     });
   }
 
-  /** Подброс батутом. */
+  /** Launch by a trampoline. */
   launch(velocity: number): void {
     this.body.setVelocityY(-velocity);
     this.lastGroundedAt = -Infinity;
@@ -302,7 +302,7 @@ export class LampPlayer {
     this.airTime = 0.2;
   }
 
-  /** Радостный прыжок на месте (после правильного ответа). */
+  /** A joyful hop in place (after a correct answer). */
   cheer(): void {
     this.squash = 1.3;
     this.squashVel = 0;
@@ -314,7 +314,7 @@ export class LampPlayer {
     this.halo.setAlpha(glow * 0.9);
   }
 
-  /** Отдельная синхронизация, когда визуал «заморожен» анимацией портала. */
+  /** Separate synchronization when the visual is "frozen" by the portal animation. */
   get isAnimatingPortal(): boolean {
     return this.frozen && !this.body.allowGravity;
   }

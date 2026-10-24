@@ -33,7 +33,7 @@ test.describe('Меню и сохранение', () => {
     await expect(page.getByTestId('level-2')).toBeDisabled();
     await openGame(page, JSON.stringify({ unlockedLevels: 'oops', completedLevels: [1, 99], skillStats: 5 }));
     await page.getByTestId('play').click();
-    // Пройденный уровень 1 корректно открывает уровень 2, мусор отброшен.
+    // Completed level 1 correctly unlocks level 2, the garbage is dropped.
     await expect(page.getByTestId('level-2')).toBeEnabled();
     await expect(page.getByTestId('level-3')).toBeDisabled();
     expect(errors).toEqual([]);
@@ -83,7 +83,7 @@ test.describe('Платформер (клавиатура)', () => {
     expect(s1.x).toBeGreaterThan(s0.x + 60);
     expect(s1.vx).toBeGreaterThan(200);
 
-    // Прыжок во время движения.
+    // A jump while moving.
     await page.keyboard.press('Space');
     await expect.poll(async () => (await state(page)).vy).toBeLessThan(0);
     const air = await state(page);
@@ -94,12 +94,12 @@ test.describe('Платформер (клавиатура)', () => {
     expect(landed.feetY).toBeLessThanOrEqual(601);
     await expect.poll(async () => Math.abs((await state(page)).vx)).toBeLessThan(1);
 
-    // Ступенька на высоте 500: запрыгиваем и стоим на ней.
+    // A step at height 500: jump up and stand on it.
     await teleport(page, 700, 400);
     const onLedge = await settle(page);
     expect(onLedge.feetY).toBeCloseTo(500, 0);
 
-    // Влево (A) тоже работает.
+    // Left (A) works too.
     await teleport(page, 400, 540);
     await settle(page);
     const before = await state(page);
@@ -123,7 +123,7 @@ test.describe('Платформер (клавиатура)', () => {
     await startLevel(page, 1);
     await teleport(page, 1420, 540);
     await expect.poll(async () => (await state(page)).respawn.x).toBe(1360);
-    await teleport(page, 1220, 680); // в яму
+    await teleport(page, 1220, 680); // into the pit
     await expect.poll(async () => (await state(page)).x, { timeout: 5000 }).toBeCloseTo(1360, 0);
     const s = await settle(page);
     expect(s.feetY).toBeCloseTo(600, 0);
@@ -150,7 +150,7 @@ test.describe('Задания уровня 1', () => {
     const card = page.getByTestId('question-card');
     await expect(card).toBeVisible();
     const q = await runtimeQuestion(page, 'l1-sign');
-    // Записка вариативна, но всегда про золотой ключ и ворота.
+    // The note varies, but it is always about the golden key and the gate.
     await expect(page.getByTestId('q-story')).toContainText('ключ');
     const wrong = q.options.find((o) => o.id !== q.correct)!;
     await page.getByTestId(`option-${wrong.id}`).click();
@@ -222,7 +222,7 @@ test.describe('Задания уровня 1', () => {
     await openGame(page);
     await startLevel(page, 1);
     await teleport(page, 5085, 440);
-    // Облаков ещё нет — лампа падает и возвращается к пройденной контрольной точке (x=3950).
+    // There are no clouds yet — the lamp falls and returns to the checkpoint already passed (x=3950).
     await expect.poll(async () => (await state(page)).x, { timeout: 5000 }).toBeCloseTo(3950, 0);
     await teleport(page, 4660, 540);
     await answerOpenCard(page);
@@ -304,36 +304,36 @@ test.describe('Сенсорное управление', () => {
     await expect(page.getByTestId('btn-jump')).toBeVisible();
     const s0 = await settle(page);
 
-    // Удержание «вправо».
+    // Holding "right".
     await pointer(page, 'btn-right', 'pointerdown', 1);
     await page.waitForTimeout(500);
     const s1 = await state(page);
     expect(s1.x).toBeGreaterThan(s0.x + 60);
     await expect(page.getByTestId('btn-right')).toHaveClass(/active/);
 
-    // Второй палец — прыжок, первый всё ещё держит движение.
+    // The second finger — jump, the first still holds movement.
     await pointer(page, 'btn-jump', 'pointerdown', 2);
     await expect.poll(async () => (await state(page)).vy).toBeLessThan(0);
     expect((await state(page)).vx).toBeGreaterThan(100);
     await pointer(page, 'btn-jump', 'pointerup', 2);
     await settle(page);
-    expect((await state(page)).vx).toBeGreaterThan(100); // движение не сбросилось
+    expect((await state(page)).vx).toBeGreaterThan(100); // movement was not reset
 
-    // Палец скользит на левую половину — лампа разворачивается.
+    // The finger slides to the left half — the lamp turns around.
     await pointer(page, 'dpad', 'pointermove', 1, -60);
     await expect.poll(async () => (await state(page)).vx).toBeLessThan(-100);
 
-    // Палец уходит далеко за кнопки — движение останавливается.
+    // The finger moves far beyond the buttons — movement stops.
     await pointer(page, 'dpad', 'pointermove', 1, 600);
     await expect.poll(async () => Math.abs((await state(page)).vx)).toBeLessThan(1);
 
-    // Возврат и отпускание.
+    // Return and release.
     await pointer(page, 'btn-right', 'pointermove', 1);
     await expect.poll(async () => (await state(page)).vx).toBeGreaterThan(100);
     await pointer(page, 'btn-right', 'pointerup', 1);
     await expect.poll(async () => Math.abs((await state(page)).vx)).toBeLessThan(1);
 
-    // pointercancel (например, системный жест) тоже отпускает кнопку.
+    // pointercancel (for example, a system gesture) also releases the button.
     await pointer(page, 'btn-left', 'pointerdown', 3);
     await expect.poll(async () => (await state(page)).vx).toBeLessThan(-100);
     await pointer(page, 'btn-left', 'pointercancel', 3);

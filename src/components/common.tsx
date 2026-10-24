@@ -42,7 +42,7 @@ export function BackButton({ onClick, label = 'Назад' }: { onClick: () => v
   );
 }
 
-/** Фоновое небо с облаками для меню. */
+/** Background sky with clouds for the menu. */
 export function MenuSky() {
   return (
     <div className="menu-sky" aria-hidden>

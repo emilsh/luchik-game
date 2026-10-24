@@ -27,7 +27,7 @@ export function label(
     .setOrigin(0.5, 0.5);
 }
 
-// ---------- Контрольная точка ----------
+// ---------- Checkpoint ----------
 
 export class Checkpoint {
   private img: Phaser.GameObjects.Image;
@@ -57,7 +57,7 @@ export class Checkpoint {
   }
 }
 
-// ---------- Портал ----------
+// ---------- Portal ----------
 
 export class Portal {
   private ring: Phaser.GameObjects.Image;
@@ -119,7 +119,7 @@ export class Portal {
   }
 }
 
-// ---------- Ворота ----------
+// ---------- Gates ----------
 
 const GATE_SPRITE = {
   hedge: 'gateHedge',
@@ -147,7 +147,7 @@ export class Gate {
     readonly def: GateDef,
   ) {
     this.img = addSprite(scene, def.x, def.y + 6, GATE_SPRITE[def.kind]).setDepth(DEPTH.gate);
-    // Тело ворот — до самого верха мира, чтобы их нельзя было перепрыгнуть.
+    // The gate's body reaches the very top of the world so it cannot be jumped over.
     const w = 110;
     this.zone = scene.add.zone(def.x, def.y / 2, w, def.y);
     scene.physics.add.existing(this.zone, true);
@@ -185,7 +185,7 @@ export class Gate {
   }
 }
 
-// ---------- Персонаж / объект станции ----------
+// ---------- Character / station object ----------
 
 const NPC_SPRITE: Partial<Record<NpcKind | 'keyhole', keyof typeof SPRITES>> = {
   sign: 'sign',
@@ -202,7 +202,7 @@ const NPC_SPRITE: Partial<Record<NpcKind | 'keyhole', keyof typeof SPRITES>> = {
   bookstand: 'bookstand',
 };
 
-/** Неживые объекты не «дышат». */
+/** Inanimate objects do not "breathe". */
 const STATIC_NPC = new Set(['machine', 'lever', 'sign', 'numlock', 'telescope', 'bookstand']);
 
 export class StationView {
@@ -226,7 +226,7 @@ export class StationView {
       if (flyer) {
         scene.tweens.add({ targets: this.img, y: y - 90, duration: 1100, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
       } else if (!STATIC_NPC.has(npc)) {
-        // Живые персонажи слегка «дышат».
+        // Living characters "breathe" slightly.
         scene.tweens.add({
           targets: this.img,
           scaleY: this.img.scaleY * 1.04,
@@ -260,7 +260,7 @@ export class StationView {
   }
 }
 
-// ---------- Табличка со словом ----------
+// ---------- Word sign ----------
 
 export class WordBoard {
   private c: Phaser.GameObjects.Container;
@@ -283,7 +283,7 @@ export class WordBoard {
   }
 }
 
-// ---------- Постамент с картинкой ----------
+// ---------- Pedestal with a picture ----------
 
 export class Pedestal {
   private pic: Phaser.GameObjects.Text;
@@ -296,7 +296,7 @@ export class Pedestal {
     emoji: string,
     style: 'stone' | 'ground' = 'stone',
   ) {
-    // Несколько эмодзи (например, «дерево и три цветка») рисуем чуть мельче.
+    // Several emoji (for example, "a tree and three flowers") are drawn a bit smaller.
     const many = Array.from(emoji).length > 2;
     const lift = style === 'stone' ? 120 : 64;
     if (style === 'stone') {
@@ -336,7 +336,7 @@ export class Pedestal {
   }
 }
 
-/** Детали, встающие в машину (уровень 4). */
+/** Parts that slot into the machine (level 4). */
 export function machineParts(scene: Phaser.Scene, x: number, y: number): Phaser.GameObjects.Image[] {
   const left = x - SPRITES.machine.w / 2;
   const top = y - SPRITES.machine.h;

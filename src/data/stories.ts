@@ -1,4 +1,4 @@
-// Короткие сюжетные вставки перед уровнями и финальные тексты.
+// Short story inserts before levels and the final texts.
 
 export const LEVEL_INTROS: Record<number, string[]> = {
   1: [

@@ -1,4 +1,4 @@
-// Главы приключения. Уровни нумеруются сквозь главы.
+// Adventure chapters. Levels are numbered continuously across chapters.
 
 export interface ChapterDef {
   id: number;

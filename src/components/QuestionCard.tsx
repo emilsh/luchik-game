@@ -168,7 +168,7 @@ export function QuestionCard({ stationId, npc, question: q, index, total, onSolv
     if (timer.current) window.clearTimeout(timer.current);
   }, []);
 
-  /** Единая отправка ответа для всех режимов: выбор, порядок, программа. */
+  /** Single answer submission for all modes: choice, order, program. */
   const submit = (answer: string): boolean => {
     if (solved) return true;
     const res = questions.answer(q.id, answer);
@@ -271,7 +271,7 @@ export function QuestionCard({ stationId, npc, question: q, index, total, onSolv
   );
 }
 
-/** Карточка-поручение «Найди предмет по английскому слову». */
+/** Quest card: "Find the object by its English word". */
 export function FindCard({ question: q, onAccept }: { question: QuestionDef; onAccept: () => void }) {
   const word = q.word ?? '';
   const { settings } = useProgress();

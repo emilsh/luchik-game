@@ -33,7 +33,7 @@ export function getLevel(id: number): LevelDef {
   return l;
 }
 
-/** Все награды за уровень: основная и дополнительные. */
+/** All rewards for a level: the main one and the extra ones. */
 export function levelRewards(l: LevelDef) {
   return [l.reward, ...(l.extraRewards ?? [])];
 }

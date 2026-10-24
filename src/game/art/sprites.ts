@@ -1,7 +1,7 @@
 import { CH2_SPRITES } from './sprites2';
 
-// Оригинальные SVG-спрайты Lamp Quest. Используются и в Phaser (растеризуются
-// в текстуры), и в React (как <img>). Каждый спрайт — внутренняя разметка + размер.
+// Original SVG sprites of Lamp Quest. Used both in Phaser (rasterized
+// into textures) and in React (as <img>). Each sprite is inner markup + size.
 
 export interface SpriteDef {
   w: number;
@@ -12,8 +12,8 @@ export interface SpriteDef {
 const LAMP_ARM = '#3E5C76';
 const LAMP_ARM_LIGHT = '#7FA3C2';
 
-// Абажур Лучика без глаз (глаза рисуются отдельно, чтобы моргать и смотреть).
-// Точка крепления шеи — (18, 40).
+// Luchik's lamp shade without eyes (the eyes are drawn separately so they can blink and look around).
+// Neck attachment point — (18, 40).
 const HEAD_BODY = `
   <defs>
     <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
@@ -83,7 +83,7 @@ export const SPRITES = {
   lampHead: { w: 80, h: 64, body: HEAD_BODY },
   lampBase: { w: 70, h: 28, body: BASE_BODY },
 
-  /** Цельная лампа для меню и экранов интерфейса. */
+  /** The whole lamp for the menu and interface screens. */
   lampFull: {
     w: 150,
     h: 160,
@@ -529,7 +529,7 @@ export const SPRITES = {
     `,
   },
 
-  // ---------- Декор фонов ----------
+  // ---------- Background decor ----------
 
   tree: {
     w: 160,
@@ -683,7 +683,7 @@ export const SPRITES = {
 
 export type SpriteKey = keyof typeof SPRITES;
 
-/** Полная SVG-разметка спрайта нужного пиксельного размера. */
+/** Full SVG markup of a sprite at the required pixel size. */
 export function svgMarkup(def: SpriteDef, scale = 1): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${def.w} ${def.h}" width="${Math.round(def.w * scale)}" height="${Math.round(def.h * scale)}">${def.body}</svg>`;
 }
@@ -692,8 +692,8 @@ export function svgDataUri(key: SpriteKey, scale = 1): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgMarkup(SPRITES[key], scale))}`;
 }
 
-/** Точка крепления шеи на абажуре (в координатах lampHead). */
+/** Neck attachment point on the lamp shade (in lampHead coordinates). */
 export const HEAD_PIVOT = { x: 18, y: 40 };
-/** Центр светящегося отверстия абажура. */
+/** Center of the glowing opening of the lamp shade. */
 export const HEAD_RIM = { x: 67, y: 33 };
 export const LAMP_COLORS = { arm: LAMP_ARM, armLight: LAMP_ARM_LIGHT };

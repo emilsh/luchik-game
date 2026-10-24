@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 11. Подводный город: английские слова, чтение записки, жемчужины и сложение.
-// Новые механики — плавучая физика (мягкая гравитация), пузырьковый поток и тоннели.
+// 11. Underwater City: English words, reading a note, pearls and addition.
+// New mechanics — buoyant physics (soft gravity), a bubble current, and tunnels.
 export const level11: LevelDef = {
   id: 11,
   chapter: 2,
@@ -20,9 +20,9 @@ export const level11: LevelDef = {
     { x: 1830, y: 300, w: 1300 },
     { x: 3130, y: 600, w: 1800 },
     { x: 3250, y: 480, w: 120, kind: 'ledge' },
-    // Тоннель: потолок, на который можно забраться
+    // Tunnel: a ceiling that can be climbed onto
     { x: 3400, y: 380, w: 500, h: 60, kind: 'block' },
-    // Подъёмник из ракушек
+    // Shell lift
     { x: 4800, y: 300, w: 130, kind: 'ledge', move: { dy: 260, speed: 55 }, showWhen: 'blue' },
     { x: 4930, y: 300, w: 1200 },
     { x: 6130, y: 600, w: 1870 },

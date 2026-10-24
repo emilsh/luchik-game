@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 8. Библиотека времени: порядок событий, причина и следствие, поиск книги.
-// Новые механики — летающая книга-лифт, тайная дверь-шкаф, лесенка из книг.
+// 8. Library of Time: event order, cause and effect, finding a book.
+// New mechanics — a flying book lift, a secret bookcase door, a staircase of books.
 export const level8: LevelDef = {
   id: 8,
   chapter: 2,
@@ -17,12 +17,12 @@ export const level8: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1460 },
     { x: 520, y: 500, w: 170, kind: 'books' },
-    // Летающая книга-лифт
+    // Flying book lift
     { x: 1300, y: 300, w: 160, kind: 'books', move: { dy: 280, speed: 60 }, showWhen: 'story1' },
     { x: 1460, y: 300, w: 1700 },
     { x: 1800, y: 190, w: 160, kind: 'books' },
     { x: 3160, y: 600, w: 1700 },
-    // Лесенка из книг после поиска
+    // Staircase of books after the search
     { x: 4450, y: 490, w: 140, kind: 'books', showWhen: 'findbook' },
     { x: 4650, y: 380, w: 140, kind: 'books', showWhen: 'findbook' },
     { x: 4850, y: 270, w: 140, kind: 'books', showWhen: 'findbook' },

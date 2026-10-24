@@ -1,5 +1,5 @@
-// Спрайты второй главы: предметы, персонажи, ворота и декор восьми локаций.
-// Стиль тот же, что в sprites.ts: мягкие градиенты, тёмный контур, блик.
+// Chapter 2 sprites: items, characters, gates, and decor of the eight locations.
+// Same style as in sprites.ts: soft gradients, dark outline, highlight.
 
 interface Def {
   w: number;
@@ -17,7 +17,7 @@ function gem(cx: number, top: number, w: number, h: number, a: string, b: string
 }
 
 export const CH2_SPRITES = {
-  // ---------- Предметы ----------
+  // ---------- Items ----------
   light: {
     w: 48,
     h: 48,
@@ -79,7 +79,7 @@ export const CH2_SPRITES = {
       <ellipse cx="14" cy="20" rx="3" ry="6" fill="#fff" opacity="0.9" transform="rotate(25 14 20)"/>`,
   },
 
-  // ---------- Персонажи и механизмы ----------
+  // ---------- Characters and mechanisms ----------
   numlock: {
     w: 112,
     h: 160,
@@ -154,7 +154,7 @@ export const CH2_SPRITES = {
       <circle cx="50" cy="18" r="10" fill="#FFF3A6" opacity="0.8"/>`,
   },
 
-  // ---------- Ворота ----------
+  // ---------- Gates ----------
   gateCrystal: {
     w: 140,
     h: 430,
@@ -197,7 +197,7 @@ export const CH2_SPRITES = {
       <circle cx="120" cy="230" r="8" fill="#FFD45C" stroke="#A86B08" stroke-width="2"/>`,
   },
 
-  // ---------- Декор ----------
+  // ---------- Decor ----------
   windmill: {
     w: 140,
     h: 260,

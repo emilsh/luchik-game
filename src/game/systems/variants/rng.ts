@@ -1,5 +1,5 @@
-// Детерминированный генератор случайных чисел: одно и то же зерно — одинаковые задания.
-// Зерно задаётся на прохождение (для тестов — через ?seed=N).
+// Deterministic random number generator: the same seed — the same tasks.
+// The seed is set per playthrough (for tests — via ?seed=N).
 
 export interface Rng {
   next(): number;

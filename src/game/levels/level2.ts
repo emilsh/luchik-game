@@ -1,7 +1,7 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// Мост чисел: счёт, сравнение, сложение, вычитание.
+// Bridge of Numbers: counting, comparison, addition, subtraction.
 export const level2: LevelDef = {
   id: 2,
   chapter: 1,
@@ -18,17 +18,17 @@ export const level2: LevelDef = {
     { x: 760, y: 395, w: 180, kind: 'ledge' },
     { x: 1060, y: 495, w: 180, kind: 'ledge' },
     { x: 1240, y: 400, w: 160, kind: 'ledge' },
-    // Первый мост
+    // First bridge
     { x: 1500, y: 600, w: 280, h: 34, kind: 'bridge', showWhen: 'bridge1:0' },
     { x: 1780, y: 600, w: 280, h: 34, kind: 'bridge', showWhen: 'bridge1:1' },
     { x: 2060, y: 600, w: 840 },
     { x: 2350, y: 495, w: 160, kind: 'ledge' },
-    // Едущая платформа
+    // Moving platform
     { x: 2920, y: 560, w: 140, kind: 'ledge', move: { dx: 140, speed: 60 } },
     { x: 3200, y: 600, w: 900 },
     { x: 3400, y: 490, w: 160, kind: 'ledge' },
     { x: 3640, y: 390, w: 160, kind: 'ledge' },
-    // Второй мост
+    // Second bridge
     { x: 4100, y: 600, w: 280, h: 34, kind: 'bridge', showWhen: 'bridge2:0' },
     { x: 4380, y: 600, w: 280, h: 34, kind: 'bridge', showWhen: 'bridge2:1' },
     { x: 4660, y: 600, w: 1540 },

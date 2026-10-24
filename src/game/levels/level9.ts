@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 9. Фабрика роботов: действия в пределах 20, программа для робота, поиск ошибки.
-// Новые механики — конвейеры, подъёмник и робот-помощник, который выполняет программу.
+// 9. Robot Factory: operations within 20, a robot program, bug finding.
+// New mechanics — conveyors, a lift, and a helper robot that runs the program.
 export const level9: LevelDef = {
   id: 9,
   chapter: 2,
@@ -17,7 +17,7 @@ export const level9: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1640 },
     { x: 500, y: 510, w: 400, kind: 'conveyor', conveyor: 70 },
-    // Подъёмник на верхний цех
+    // Lift to the upper shop
     { x: 1500, y: 300, w: 140, kind: 'shelf', move: { dy: 280, speed: 60 }, showWhen: 'r1' },
     { x: 1640, y: 300, w: 1600 },
     { x: 2100, y: 280, w: 300, kind: 'conveyor', conveyor: -60 },
@@ -51,7 +51,7 @@ export const level9: LevelDef = {
       x: 2800,
       y: 300,
       trigger: 'prog',
-      // Робот повторяет программу, которую составил ребёнок, и доходит до кнопки у ворот.
+      // The robot repeats the program the child built and reaches the button by the gate.
       path: [{ x: 3120, y: 300 }],
       fromProgram: 'l9-program',
       doneFlag: 'button',

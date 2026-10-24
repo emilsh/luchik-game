@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 6. Кристальная пещера: действия в пределах 15, сравнение, логика.
-// Новые механики — числовые замки, рычаг и кристальный лифт.
+// 6. Crystal Cave: operations within 15, comparison, logic.
+// New mechanics — number locks, a lever, and a crystal lift.
 export const level6: LevelDef = {
   id: 6,
   chapter: 2,
@@ -17,16 +17,16 @@ export const level6: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1900 },
     { x: 500, y: 495, w: 180, kind: 'crystal' },
-    // Низкий свод пещеры
+    // Low cave ceiling
     { x: 1450, y: 380, w: 250, h: 60, kind: 'block' },
-    // Лифт на верхний ярус — после рычага
+    // Lift to the upper tier — after the lever
     { x: 1760, y: 300, w: 140, kind: 'crystal', move: { dy: 280, speed: 60 }, showWhen: 'lever' },
     { x: 1900, y: 300, w: 1000 },
     { x: 2900, y: 600, w: 1700 },
     { x: 3300, y: 500, w: 140, kind: 'crystal' },
     { x: 3500, y: 400, w: 140, kind: 'crystal' },
     { x: 3700, y: 300, w: 140, kind: 'crystal' },
-    // Плывущий кристалл над пропастью
+    // Floating crystal over the chasm
     { x: 4620, y: 560, w: 140, kind: 'crystal', move: { dx: 140, speed: 60 } },
     { x: 4900, y: 600, w: 2500 },
   ],

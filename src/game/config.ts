@@ -1,10 +1,10 @@
-// Константы мира и физики. Подобраны под шестилетнего игрока:
-// прыжок ~160 px в высоту и ~250 px в длину на полной скорости,
-// поэтому все ямы в уровнях не шире 170 px, а ступени не выше 115 px.
+// World and physics constants. Tuned for a six-year-old player:
+// a jump is ~160 px high and ~250 px long at full speed,
+// so all pits in levels are no wider than 170 px and steps no taller than 115 px.
 
 export const WORLD_H = 720;
 export const GROUND_Y = 600;
-/** Насколько ниже экрана нужно упасть, чтобы вернуться на контрольную точку. */
+/** How far below the screen the player must fall to return to the checkpoint. */
 export const FALL_LIMIT = WORLD_H + 140;
 
 export const PHYS = {
@@ -16,16 +16,16 @@ export const PHYS = {
   decelAir: 1000,
   jumpVelocity: 690,
   maxFall: 950,
-  /** Прыжок ещё разрешён спустя столько мс после схода с края. */
+  /** A jump is still allowed this many ms after walking off an edge. */
   coyoteMs: 120,
-  /** Нажатие прыжка до приземления запоминается на столько мс. */
+  /** A jump press before landing is remembered for this many ms. */
   jumpBufferMs: 160,
 };
 
 export const PLAYER_BODY = { w: 40, h: 82 };
 
-/** Разрешение растеризации SVG-спрайтов (кратно логическому размеру). */
+/** Rasterization resolution of SVG sprites (a multiple of the logical size). */
 export const TEX_RES = 3;
 
-/** Радиус, в котором лампа подбирает звёзды и предметы. */
+/** Radius within which the lamp picks up stars and items. */
 export const PICKUP_RADIUS = 52;

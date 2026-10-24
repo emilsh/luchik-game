@@ -1,7 +1,7 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// Мастерская изобретателя: детали → инструкция → пример → KEY → рубильник.
+// Inventor's Workshop: parts → instructions → equation → KEY → switch.
 export const level4: LevelDef = {
   id: 4,
   chapter: 1,

@@ -10,7 +10,7 @@ export interface AnswerResult {
   explanation?: string;
 }
 
-/** Зерно из адреса (?seed=N) — для воспроизводимых тестов; иначе каждый раз новое. */
+/** Seed from the URL (?seed=N) — for reproducible tests; otherwise new every time. */
 function seedFromUrl(): number | null {
   try {
     const v = new URLSearchParams(window.location.search).get('seed');
@@ -21,15 +21,15 @@ function seedFromUrl(): number | null {
 }
 
 /**
- * Универсальная система заданий: на каждое прохождение уровня собирает свой
- * набор вариантов, проверяет ответы, хранит состояние выполнения и пишет
- * статистику и «историю успехов» по навыкам в прогресс.
+ * Universal task system: for each playthrough of a level it builds its own
+ * set of variants, checks answers, stores completion state, and writes
+ * statistics and the per-skill "success history" into progress.
  */
 class QuestionManager {
   private runtime = new Map<string, QuestionRuntimeState>();
   private resolved: Record<string, QuestionDef> = {};
   private runCounter = 0;
-  /** Варианты текущего прохождения — для отладки и тестов. */
+  /** Variants of the current playthrough — for debugging and tests. */
   variantKeys: Record<string, string> = {};
 
   get(id: string): QuestionDef {
@@ -47,7 +47,7 @@ class QuestionManager {
     return s;
   }
 
-  /** Начало прохождения уровня: новые варианты всех заданий уровня. */
+  /** Start of a level playthrough: new variants of all the level's tasks. */
   beginRun(levelId: number, ids: string[]): void {
     this.runtime.clear();
     const save = progress.getSnapshot();
@@ -76,7 +76,7 @@ class QuestionManager {
     return q;
   }
 
-  /** Верен ли ответ. Для «порядка» ответ — id через запятую, для программы — команды через запятую. */
+  /** Whether an answer is correct. For "order" it is comma-separated ids; for a program, comma-separated commands. */
   isCorrect(q: QuestionDef, answer: string): boolean {
     if (q.program) return runProgram(q.program.track, decodeProgram(answer)).success;
     if (q.order) return answer === q.order.join(',');

@@ -14,7 +14,7 @@ export function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'menu' });
   const save = useProgress();
 
-  // Звук и речь в Safari разрешены только после жеста пользователя.
+  // Sound and speech are allowed in Safari only after a user gesture.
   useEffect(() => {
     input.attachKeyboard();
     let unlocked = false;
@@ -26,7 +26,7 @@ export function App() {
     window.addEventListener('pointerdown', unlock, true);
     window.addEventListener('keydown', unlock, true);
 
-    // Никакой прокрутки, «резинки» и масштабирования жестами во время игры.
+    // No scrolling, rubber-banding, or pinch-zoom gestures during play.
     const noScroll = (e: TouchEvent) => {
       const t = e.target as Element | null;
       if (!t || !t.closest('.scrollable')) e.preventDefault();

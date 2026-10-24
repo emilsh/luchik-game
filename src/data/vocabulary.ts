@@ -1,10 +1,10 @@
-// Английские слова уровня «Английский лес» (и KEY для мастерской).
+// English words of the "English Forest" level (and KEY for the workshop).
 
 export interface VocabWord {
   word: string;
   ru: string;
   emoji: string;
-  /** Подсказка по смыслу — не называет ответ прямо. */
+  /** A hint based on meaning — does not name the answer directly. */
   hint: string;
 }
 
@@ -19,7 +19,7 @@ export const VOCABULARY: Record<string, VocabWord> = {
   KEY: { word: 'KEY', ru: 'ключ', emoji: '🔑', hint: 'KEY открывает замки.' },
   TREE: { word: 'TREE', ru: 'дерево', emoji: '🌳', hint: 'TREE растёт в лесу, у него есть листья.' },
   FISH: { word: 'FISH', ru: 'рыба', emoji: '🐟', hint: 'FISH живёт в воде и плавает.' },
-  // Подводный город
+  // Underwater City
   SHELL: { word: 'SHELL', ru: 'ракушка', emoji: '🐚', hint: 'SHELL лежит на дне моря, в ней прячется улитка.' },
   WATER: { word: 'WATER', ru: 'вода', emoji: '💧', hint: 'WATER можно пить, она течёт.' },
   BOAT: { word: 'BOAT', ru: 'лодка', emoji: '⛵', hint: 'BOAT плывёт по воде.' },

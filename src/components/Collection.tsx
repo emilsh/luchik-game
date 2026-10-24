@@ -12,7 +12,7 @@ export function Collection({ go }: { go: (s: Screen) => void }) {
   const totalStars = LEVELS.reduce((n, l) => n + (save.bestStars[String(l.id)] ?? 0), 0);
   const maxStars = LEVELS.reduce((n, l) => n + l.stars.length, 0);
   const wordsOpen = save.unlockedLevels.includes(3);
-  // Слова подводного города появляются, когда открыт 11-й уровень.
+  // Underwater City words appear once level 11 is unlocked.
   const sea = new Set(['SHELL', 'WATER', 'BOAT', 'BLUE', 'GREEN']);
   const seaOpen = save.unlockedLevels.includes(11);
   const shards = SHARD_IDS.filter((id) => save.rewards.includes(id)).length;

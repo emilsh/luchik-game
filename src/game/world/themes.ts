@@ -12,13 +12,13 @@ export interface Theme {
   speck: number;
   ledgeTop: number;
   ledgeBody: number;
-  /** Яркость конуса света лампы. */
+  /** Brightness of the lamp's light cone. */
   lampGlow: number;
-  /** Затемнение мира до финала (0 — нет). */
+  /** World dimming until the finale (0 — none). */
   darkness: number;
-  /** Цвет акцента интерфейса (CSS). */
+  /** Interface accent color (CSS). */
   accent: string;
-  /** Градиент карточки уровня в меню (CSS). */
+  /** Level card gradient in the menu (CSS). */
   card: string;
 }
 

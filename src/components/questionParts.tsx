@@ -3,10 +3,10 @@ import type { AnswerOption, ProgramDef, QuestionVisual, RobotCmd } from '../type
 import { CMD_ICON, CMD_LABEL, encodeProgram, runProgram } from '../game/systems/robotProgram';
 import { audio } from '../game/systems/AudioManager';
 
-// Части карточки задания для второй главы: последовательности, энергия,
-// карта маршрута, дорожка робота, «расставь по порядку» и «составь программу».
+// Parts of the task card for chapter 2: sequences, energy,
+// route map, robot track, "put in order" and "build a program".
 
-/** Дорожка робота: клетки пола, ямы и флажок цели. */
+/** Robot track: floor cells, pits, and the goal flag. */
 export function Track({ track, robot, falling }: { track: string; robot: number; falling?: boolean }) {
   return (
     <div className="track" data-testid="robot-track">
@@ -35,7 +35,7 @@ export function SequenceVisual({ items }: { items: string[] }) {
 
 const ENERGY_COLORS = ['#FF8A3D', '#5B8CFF', '#B054E8'];
 
-/** Ячейки энергии: потраченные окрашены по шагам, оставшиеся светятся. */
+/** Energy cells: spent ones are colored by step, the remaining ones glow. */
 export function EnergyVisual({ total, steps }: { total: number; steps: { label: string; amount: number }[] }) {
   const cells: (number | null)[] = [];
   steps.forEach((s, si) => {
@@ -100,11 +100,11 @@ export function ExtraVisual({ v }: { v: QuestionVisual }) {
   }
 }
 
-// ---------- Расставь по порядку ----------
+// ---------- Put in order ----------
 
 /**
- * Ребёнок нажимает карточки по очереди. Верный следующий шаг встаёт в слот,
- * неверный — подсказка, и можно пробовать снова (уже поставленное не сбрасывается).
+ * The child taps cards one by one. The correct next step drops into a slot,
+ * a wrong one gives a hint, and they can try again (what is already placed is not reset).
  */
 export function OrderBoard({
   options,
@@ -171,7 +171,7 @@ export function OrderBoard({
   );
 }
 
-// ---------- Составь программу ----------
+// ---------- Build a program ----------
 
 export function ProgramBoard({
   program,
@@ -220,7 +220,7 @@ export function ProgramBoard({
       window.setTimeout(() => {
         const ok = onAnswer(encodeProgram(cmds));
         if (!ok) {
-          // Робот возвращается на старт, программу можно поправить.
+          // The robot returns to the start; the program can be fixed.
           timers.current.push(
             window.setTimeout(() => {
               setRobot(start);

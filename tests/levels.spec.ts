@@ -5,8 +5,8 @@ import { PHYS, PLAYER_BODY } from '../src/game/config';
 import { runProgram } from '../src/game/systems/robotProgram';
 import type { LevelDef, PlatformDef } from '../src/types/game';
 
-// Проверка данных уровней без браузера: каждый уровень проходим от старта
-// до портала, все задания достижимы и имеют однозначное решение.
+// Checking level data without a browser: every level is passable from the start
+// to the portal, and all tasks are reachable and have an unambiguous solution.
 
 test.beforeEach(() => {
   test.skip(test.info().project.name !== 'desktop-chromium', 'проверка данных — один раз');
@@ -17,21 +17,21 @@ interface Surface {
   r: number;
   y: number;
   bounce?: number;
-  /** Пара концов вертикального лифта. */
+  /** A pair of ends of a vertical lift. */
   liftPair?: number;
 }
 
-/** Высота подъёма за прыжок и горизонтальная дальность до поверхности на перепаде dh. */
+/** Jump rise height and horizontal reach to a surface across a height difference dh. */
 function physics(level: LevelDef) {
   const g = PHYS.gravity * (level.physics?.gravityScale ?? 1);
   const v = PHYS.jumpVelocity * (level.physics?.jumpScale ?? 1);
   const height = (v * v) / (2 * g);
   const reach = (dh: number, vy = v) => {
-    // dh > 0 — цель выше. Время полёта до высоты цели на спуске.
+    // dh > 0 — the target is higher. Flight time to the target height on the way down.
     const disc = vy * vy - 2 * g * dh;
     if (disc < 0) return -1;
     const t = (vy + Math.sqrt(disc)) / g;
-    return PHYS.runSpeed * t * 0.85; // запас 15%: ребёнок не всегда разгоняется полностью
+    return PHYS.runSpeed * t * 0.85; // 15% margin: a child doesn't always reach full speed
   };
   return { g, v, height, reach };
 }
@@ -52,7 +52,7 @@ function surfacesFor(level: LevelDef, flags: Set<string>): Surface[] {
       out.push({ l: p.x, r: p.x + p.w, y: p.y, bounce: p.kind === 'bouncy' ? p.bounce ?? 980 : undefined });
     }
   }
-  // Закрытые ворота делят поверхности, на которых стоят.
+  // Closed gates split the surfaces they stand on.
   for (const gate of level.gates) {
     if (flags.has(gate.openWhen)) continue;
     const gl = gate.x - 55;
@@ -87,7 +87,7 @@ function canMove(level: LevelDef, flags: Set<string>, a: Surface, b: Surface): b
   const dh = a.y - b.y;
   const vy = a.bounce ? a.bounce : ph.v;
   const rise = (vy * vy) / (2 * ph.g);
-  if (dh > rise - 30) return false; // нужно подняться выше цели с запасом
+  if (dh > rise - 30) return false; // we need to rise above the target with a margin
   if (gap <= 0) return true;
   return ph.reach(dh, vy) >= gap;
 }
@@ -125,17 +125,17 @@ function reachable(level: LevelDef, flags: Set<string>): Surface[] {
   return [...seen];
 }
 
-/** Точка (x, y) достижима, если над доступной поверхностью и не выше прыжка. */
+/** Point (x, y) is reachable if it is above an accessible surface and not higher than a jump. */
 function pointReachable(level: LevelDef, surfaces: Surface[], x: number, y: number, flags: Set<string>): boolean {
   const ph = physics(level);
   const onSurface = surfaces.some((s) => x >= s.l - 30 && x <= s.r + 30 && s.y - y >= -10 && s.y - y <= ph.height + PLAYER_BODY.h * 0.6);
   if (onSurface) return true;
-  // Над пропастью: звезда на дуге прыжка между соседними поверхностями.
+  // Over a chasm: a star on the jump arc between neighboring surfaces.
   const arc = surfaces.some((a) =>
     surfaces.some((b) => a !== b && canMove(level, flags, a, b) && x > Math.min(a.r, b.r) - 10 && x < Math.max(a.l, b.l) + 10 && Math.min(a.y, b.y) - y < ph.height),
   );
   if (arc) return true;
-  // В воздушном потоке.
+  // In an air current.
   return (level.winds ?? []).some(
     (w) => (!w.activeWhen || flags.has(w.activeWhen)) && x >= w.x - 20 && x <= w.x + w.w + 20 && y >= w.top - 80 && y <= w.bottom,
   );
@@ -166,7 +166,7 @@ function playLevel(level: LevelDef) {
         set(st.id);
       } else if (st.type === 'find') {
         set(`${st.id}:active`);
-        // Верный постамент меняется от прохождения к прохождению — достижимы должны быть все.
+        // The correct pedestal changes from playthrough to playthrough — all must be reachable.
         if (st.pedestals.every((p) => at(p.x, p.y))) set(st.id);
       }
     }
@@ -221,7 +221,7 @@ test('задания корректны и однозначны', () => {
     expect(q.hint.length, `${q.id}: есть подсказка`).toBeGreaterThan(5);
     if (q.order) {
       expect([...q.order].sort()).toEqual(q.options.map((o) => o.id).sort());
-      expect(q.options.map((o) => o.id)).not.toEqual(q.order); // карточки перемешаны
+      expect(q.options.map((o) => o.id)).not.toEqual(q.order); // the cards are shuffled
     } else if (q.program) {
       expect(runProgram(q.program.track, q.program.solution).success, q.id).toBe(true);
       expect(q.program.solution.length).toBeLessThanOrEqual(q.program.slots);
@@ -232,7 +232,7 @@ test('задания корректны и однозначны', () => {
     if (q.visual?.kind === 'code') {
       const v = q.visual;
       expect(runProgram(v.track, v.steps).success).toBe(false);
-      // Ровно одна замена «вперёд» → «прыжок» исправляет программу, и это верный ответ.
+      // Exactly one replacement of "forward" → "jump" fixes the program, and it is the correct answer.
       const fixes = v.steps
         .map((_, i) => i)
         .filter((i) => runProgram(v.track, v.steps.map((c, k) => (k === i ? 'jump' : c))).success);

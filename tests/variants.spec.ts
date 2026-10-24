@@ -5,8 +5,8 @@ import { SLOTS } from '../src/game/systems/variants/slots';
 import { QUESTIONS } from '../src/data/questions';
 import type { LevelDef, QuestionDef, SkillType } from '../src/types/game';
 
-// Вариативные задания: корректность, связность, разнообразие, отсутствие повторов
-// и подстройка сложности. Без браузера — прямо на генераторе.
+// Variable tasks: correctness, coherence, variety, absence of repeats
+// and difficulty tuning. Without a browser — directly on the generator.
 
 test.beforeEach(() => {
   test.skip(test.info().project.name !== 'desktop-chromium', 'проверка генератора — один раз');
@@ -67,7 +67,7 @@ test('все варианты корректны, связны и в преде�
           if (st.type !== 'find') continue;
           expect(questions[st.question].options).toHaveLength(st.pedestals.length);
         }
-        // Связанные задания используют общие данные.
+        // Linked tasks use shared data.
         const eq = (id: string) => questions[id]?.visual as { a: number; b: number } | undefined;
         if (l.id === 5) expect(eq('l5-add')?.a).toBe(questions['l5-count'].meta?.result);
         if (l.id === 10) expect(eq('l10-gate-b')?.a).toBe(questions['l10-gate-a'].meta?.result);
@@ -138,7 +138,7 @@ test('сложность подстраивается по успехам реб
   expect(tierFor(5, [0, 0, 1, 0])).toBe(1);
   expect(tierFor(1, [1, 1, 1])).toBe(2);
 
-  // Уровень 6: базовая сложность 2, у отличника — 3, если нужны подсказки — 1.
+  // Level 6: baseline difficulty 2, for a top student — 3, if hints are needed — 1.
   const l6 = LEVELS[5];
   const forms = (m: ReturnType<typeof masteryAll>) => {
     let unknownB = 0;
@@ -155,11 +155,11 @@ test('сложность подстраивается по успехам реб
   };
   const easy = forms(masteryAll(0));
   const hard = forms(masteryAll(1));
-  // Легко: без пропущенных чисел, сравнение двух чисел, суммы поменьше.
+  // Easy: no missing numbers, comparing two numbers, smaller sums.
   expect(easy.unknownB).toBe(0);
   expect(easy.three).toBe(0);
   expect(easy.maxSum).toBeLessThanOrEqual(9);
-  // Сложно: появляются «3 + ? = 7» и выбор из трёх чисел.
+  // Hard: "3 + ? = 7" appears and a choice from three numbers.
   expect(hard.unknownB).toBeGreaterThan(10);
   expect(hard.three).toBe(60);
 });

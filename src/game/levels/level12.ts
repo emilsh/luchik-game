@@ -1,9 +1,9 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 12. Обсерватория света — финал второй главы. Четыре этапа:
-// A — платформы и линзы, B — инструкция и порядок действий,
-// C — задачи для звёздного механизма, D — английское слово и сбор Кристалла Света.
+// 12. Observatory of Light — the finale of chapter 2. Four stages:
+// A — platforms and lenses, B — instructions and order of actions,
+// C — problems for the star mechanism, D — an English word and assembling the Crystal of Light.
 export const level12: LevelDef = {
   id: 12,
   chapter: 2,
@@ -16,7 +16,7 @@ export const level12: LevelDef = {
   spawn: { x: 260, y: 520 },
   intro: LEVEL_INTROS[12],
   platforms: [
-    // Этап A
+    // Stage A
     { x: 0, y: 600, w: 1200 },
     { x: 450, y: 500, w: 160, kind: 'ledge' },
     { x: 1240, y: 560, w: 140, kind: 'ledge', move: { dx: 160, speed: 70 } },
@@ -25,10 +25,10 @@ export const level12: LevelDef = {
     { x: 2060, y: 280, w: 180, kind: 'ledge' },
     { x: 2540, y: 400, w: 140, kind: 'ledge', move: { dy: 190, speed: 60 } },
     { x: 2700, y: 400, w: 1000 },
-    // Этап B → звёздный мост
+    // Stage B → star bridge
     { x: 3700, y: 400, w: 300, kind: 'crystal', showWhen: 'scope' },
     { x: 4000, y: 400, w: 1100 },
-    // Этап C → лифт к куполу
+    // Stage C → lift to the dome
     { x: 5100, y: 240, w: 140, kind: 'crystal', move: { dy: 160, speed: 60 }, showWhen: 'mech' },
     { x: 5240, y: 240, w: 1300 },
     { x: 6540, y: 600, w: 2060 },

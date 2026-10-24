@@ -2,7 +2,7 @@ import type { QuestionDef } from '../types/game';
 import { vocab } from './vocabulary';
 import { CHAPTER2_QUESTIONS } from './questions2';
 
-// Все обучающие задания игры. Уровни ссылаются на них по id.
+// All educational tasks of the game. Levels refer to them by id.
 
 function numberOptions(values: number[]) {
   return values.map((v) => ({ id: String(v), label: String(v) }));
@@ -17,7 +17,7 @@ function wordOptions(words: string[]) {
 }
 
 const LIST: QuestionDef[] = [
-  // ---------- Уровень 1: Зелёная долина ----------
+  // ---------- Level 1: Green Valley ----------
   {
     id: 'l1-sign',
     skill: 'reading',
@@ -71,7 +71,7 @@ const LIST: QuestionDef[] = [
     reward: 'Облачный мостик готов!',
   },
 
-  // ---------- Уровень 2: Мост чисел ----------
+  // ---------- Level 2: Bridge of Numbers ----------
   {
     id: 'l2-count',
     skill: 'counting',
@@ -119,7 +119,7 @@ const LIST: QuestionDef[] = [
     reward: 'Мост починен!',
   },
 
-  // ---------- Уровень 3: Английский лес ----------
+  // ---------- Level 3: English Forest ----------
   {
     id: 'l3-star',
     skill: 'english-word-to-picture',
@@ -185,7 +185,7 @@ const LIST: QuestionDef[] = [
     reward: 'Мостик до портала готов!',
   },
 
-  // ---------- Уровень 4: Мастерская изобретателя ----------
+  // ---------- Level 4: Inventor's Workshop ----------
   {
     id: 'l4-read',
     skill: 'reading',

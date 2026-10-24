@@ -1,11 +1,11 @@
 import type { AnswerOption } from '../../../types/game';
 
-// Банки коротких текстов для вариативных заданий. Каждый текст согласован
-// с миром своего уровня (например, у улитки звёзды всегда улетают на облака —
-// потому что после ответа появляется облачный мостик).
+// Banks of short texts for variable tasks. Each text is consistent
+// with the world of its level (for example, the snail's stars always fly off to the clouds —
+// because a cloud bridge appears after the answer).
 
 export interface StoryQuestion {
-  /** literal — ответ прямо в тексте; cause — «почему?» (сложнее). */
+  /** literal — the answer is right in the text; cause — "why?" (harder). */
   kind: 'literal' | 'cause';
   prompt: string;
   options: AnswerOption[];
@@ -33,7 +33,7 @@ const WHERE_CLOUDS: StoryQuestion = {
   explanation: 'Правильно! Звёзды на облаках.',
 };
 
-/** Уровень 1: история улитки Ули. */
+/** Level 1: the story of Ulya the snail. */
 export const SNAIL_STORIES: StoryEntry[] = [
   {
     key: 'wind',
@@ -181,7 +181,7 @@ const KEY_WHICH: StoryQuestion = {
   explanation: 'Верно! Нужен золотой ключ.',
 };
 
-/** Уровень 1: записка на табличке (ключ всегда наверху, ворота впереди). */
+/** Level 1: a note on the sign (the key is always up high, the gate ahead). */
 export const SIGN_NOTES: StoryEntry[] = [
   { key: 'short', story: ['Найди золотой ключ и открой ворота.'], questions: [KEY_WHAT, KEY_OPENS, KEY_WHICH] },
   {
@@ -207,14 +207,14 @@ export const SIGN_NOTES: StoryEntry[] = [
   { key: 'closed', story: ['Ворота закрыты.', 'Их откроет только золотой ключ.'], questions: [KEY_OPENS, KEY_WHICH, KEY_WHAT] },
 ];
 
-/** Все три имени — в каждом варианте, чтобы ответ нужно было прочитать в тексте. */
+/** All three names in every variant, so the answer has to be read in the text. */
 const nameOptions = (): AnswerOption[] => [
   { id: 'Искра', emoji: '✨', label: 'Искра' },
   { id: 'Огонёк', emoji: '🔥', label: 'Огонёк' },
   { id: 'Пушок', emoji: '💫', label: 'Пушок' },
 ];
 
-/** Уровень 5: история светлячка. */
+/** Level 5: the firefly's story. */
 export const FIREFLY_STORIES: StoryEntry[] = [
   {
     key: 'dark',
@@ -332,7 +332,7 @@ export const FIREFLY_STORIES: StoryEntry[] = [
   },
 ];
 
-/** Уровень 8: причина и следствие. */
+/** Level 8: cause and effect. */
 export const CAUSE_STORIES: StoryEntry[] = [
   {
     key: 'cat',
@@ -429,12 +429,12 @@ export const CAUSE_STORIES: StoryEntry[] = [
 export interface OrderEntry {
   key: string;
   story: string[];
-  /** События в верном порядке. */
+  /** Events in the correct order. */
   steps: AnswerOption[];
   hint: string;
 }
 
-/** Уровень 8: истории из трёх событий. */
+/** Level 8: stories of three events. */
 export const ORDER_STORIES: OrderEntry[] = [
   {
     key: 'seed',
@@ -498,7 +498,7 @@ export const ORDER_STORIES: OrderEntry[] = [
   },
 ];
 
-/** Уровень 12: инструкции обсерватории. */
+/** Level 12: observatory instructions. */
 export const OBSERVATORY_ORDERS: OrderEntry[] = [
   {
     key: 'dome',
@@ -532,7 +532,7 @@ export const OBSERVATORY_ORDERS: OrderEntry[] = [
   },
 ];
 
-/** Кнопки для инструкции в произвольном порядке (на высокой сложности — только чтение поможет). */
+/** Buttons for the instruction in arbitrary order (at high difficulty only reading will help). */
 export const COLOR_BUTTONS: AnswerOption[] = [
   { id: 'blue', emoji: '🔵', label: 'Синяя' },
   { id: 'red', emoji: '🔴', label: 'Красная' },

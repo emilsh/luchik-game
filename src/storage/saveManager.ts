@@ -2,8 +2,8 @@ import { SKILLS, type SaveData, type SkillStats, type SkillType } from '../types
 import { LEVEL_COUNT } from '../data/chapters';
 import { ALL_REWARD_IDS } from '../data/rewards';
 
-// Ключ не меняется между версиями формата: старые сохранения читаются
-// и мигрируют на месте, ничего не теряется.
+// The key does not change between format versions: old saves are read
+// and migrated in place, nothing is lost.
 const SAVE_KEY = 'lampquest.save.v1';
 const LEVEL_IDS = Array.from({ length: LEVEL_COUNT }, (_, i) => i + 1);
 const byNumber = (a: number, b: number) => a - b;
@@ -47,9 +47,9 @@ function levelList(v: unknown): number[] {
 }
 
 /**
- * Проверяет данные из хранилища и подставляет значения по умолчанию для всего
- * повреждённого. Заодно мигрирует формат: v1 (4 уровня) → v2 (12 уровней, главы).
- * Новые поля v2 получают значения по умолчанию, всё старое переносится как есть.
+ * Validates data from storage and substitutes defaults for anything corrupted.
+ * Also migrates the format: v1 (4 levels) → v2 (12 levels, chapters).
+ * New v2 fields get defaults, everything old is carried over as is.
  */
 export function sanitizeSave(raw: unknown): SaveData {
   const d = defaultSave();
@@ -58,7 +58,7 @@ export function sanitizeSave(raw: unknown): SaveData {
   const unlocked = levelList(raw.unlockedLevels);
   d.unlockedLevels = [...new Set([1, ...unlocked])].sort(byNumber);
   d.completedLevels = levelList(raw.completedLevels);
-  // Пройденный уровень всегда открывает следующий.
+  // A completed level always unlocks the next one.
   for (const id of d.completedLevels) {
     if (id < LEVEL_COUNT && !d.unlockedLevels.includes(id + 1)) d.unlockedLevels.push(id + 1);
   }
@@ -119,7 +119,7 @@ export function loadSave(): SaveData {
     if (!raw) return defaultSave();
     return sanitizeSave(JSON.parse(raw));
   } catch {
-    // Повреждённый JSON или недоступное хранилище (приватный режим) — начинаем заново.
+    // Corrupted JSON or unavailable storage (private mode) — start over.
     return defaultSave();
   }
 }
@@ -128,7 +128,7 @@ export function writeSave(data: SaveData): void {
   try {
     window.localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {
-    // Хранилище недоступно — игра продолжает работать без сохранения.
+    // Storage is unavailable — the game keeps working without saving.
   }
 }
 

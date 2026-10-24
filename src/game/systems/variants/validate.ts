@@ -1,9 +1,9 @@
 import type { QuestionDef, RobotCmd } from '../../../types/game';
 import { runProgram } from '../robotProgram';
 
-// Проверка задания: одно верное решение, понятные варианты, числа в пределах.
-// Используется и в игре (непрошедший вариант заменяется исходным заданием),
-// и в автотестах.
+// Task validation: a single correct solution, clear options, numbers within limits.
+// Used both in the game (a variant that fails is replaced with the original task)
+// and in autotests.
 
 const MAX_NUMBER = 20;
 

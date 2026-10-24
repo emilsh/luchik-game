@@ -22,7 +22,7 @@ export interface LQState {
   gravity: number;
 }
 
-/** Собирает ошибки консоли и необработанные исключения страницы. */
+/** Collects console errors and uncaught page exceptions. */
 export function trackErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('console', (m) => {
@@ -32,7 +32,7 @@ export function trackErrors(page: Page): string[] {
   return errors;
 }
 
-/** Открывает игру с чистым (или заданным) сохранением. Звук выключен, чтобы не шуметь. */
+/** Opens the game with a clean (or given) save. Sound is off to keep it quiet. */
 export async function openGame(page: Page, save?: Record<string, unknown> | string): Promise<void> {
   await page.goto('/?debug');
   await page.evaluate(
@@ -62,20 +62,20 @@ export async function startLevel(page: Page, id: number): Promise<void> {
   await expect.poll(async () => (await state(page)).modal).toBe(false);
 }
 
-/** Ждёт, пока лампа встанет на опору. */
+/** Waits until the lamp comes to rest on a support. */
 export async function settle(page: Page): Promise<LQState> {
   await expect.poll(async () => (await state(page)).onGround, { timeout: 5000 }).toBe(true);
   return state(page);
 }
 
-/** Задание, выпавшее в этом прохождении (задания вариативны). */
+/** The task drawn in this playthrough (tasks are variable). */
 export const runtimeQuestion = (page: Page, id: string): Promise<QuestionDef> =>
   page.evaluate((qid) => (window as unknown as { __LQ: { question: (x: string) => QuestionDef } }).__LQ.question(qid), id);
 
 export const runVariants = (page: Page): Promise<Record<string, string>> =>
   page.evaluate(() => (window as unknown as { __LQ: { variants: () => Record<string, string> } }).__LQ.variants());
 
-/** Отвечает на открытую карточку правильно (по заданию этого прохождения). */
+/** Answers an open card correctly (according to this playthrough's task). */
 export async function answerOpenCard(page: Page, firstWrong = false): Promise<string> {
   const card = page.getByTestId('question-card');
   await expect(card).toBeVisible();
@@ -89,7 +89,7 @@ export async function answerOpenCard(page: Page, firstWrong = false): Promise<st
     for (const id of q.order) await page.getByTestId(`option-${id}`).click();
   } else if (q.program) {
     if (firstWrong) {
-      // Программа без прыжка: робот падает в яму, показывается подсказка.
+      // A program without a jump: the robot falls into a pit and a hint is shown.
       for (let i = 0; i < q.program.slots; i++) await page.getByTestId('cmd-forward').click();
       await page.getByTestId('program-run').click();
       await expect(page.getByTestId('q-hint')).toBeVisible({ timeout: 6000 });
@@ -118,7 +118,7 @@ export async function hasFlag(page: Page, flag: string): Promise<boolean> {
 export const levelDef = (page: Page) =>
   page.evaluate(() => (window as unknown as { __LQ: { level: () => LevelDef } }).__LQ.level());
 
-/** Проходит текущий уровень по всем станциям через настоящий интерфейс заданий. */
+/** Plays through the current level at every station via the real task interface. */
 export async function playThrough(page: Page, wrongFirst: boolean): Promise<void> {
   const L = await levelDef(page);
   for (const it of L.items) {
@@ -127,7 +127,7 @@ export async function playThrough(page: Page, wrongFirst: boolean): Promise<void
   }
   for (const st of L.stations) {
     if (st.type === 'hint' || st.type === 'word') continue;
-    // Ждём робота-помощника, если станция за воротами, которые он открывает.
+    // Wait for the helper robot if the station is behind a gate that it opens.
     for (const h of L.helpers ?? []) {
       if ((await hasFlag(page, h.trigger)) && !(await hasFlag(page, h.doneFlag))) {
         await expect.poll(() => hasFlag(page, h.doneFlag), { timeout: 10_000 }).toBe(true);

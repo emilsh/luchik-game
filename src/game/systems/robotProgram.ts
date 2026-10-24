@@ -1,7 +1,7 @@
 import type { RobotCmd } from '../../types/game';
 
-// Исполнение программы робота на дорожке. Используется и для проверки
-// ответа (QuestionManager), и для анимации в карточке задания.
+// Running a robot program on a track. Used both to check
+// the answer (QuestionManager) and to animate the task card.
 
 export interface RunStep {
   cmd: RobotCmd;
@@ -13,7 +13,7 @@ export interface RunStep {
 export interface RunResult {
   steps: RunStep[];
   success: boolean;
-  /** Почему не получилось: упал в яму, ушёл за край или не дошёл до цели. */
+  /** Why it failed: fell into a pit, went past the edge, or did not reach the goal. */
   failure: 'pit' | 'edge' | 'short' | null;
 }
 

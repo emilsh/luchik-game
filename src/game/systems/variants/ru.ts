@@ -1,4 +1,4 @@
-// Согласование числительных: 1 шестерёнка, 2 шестерёнки, 5 шестерёнок.
+// Russian numeral agreement: 1 шестерёнка, 2 шестерёнки, 5 шестерёнок (gear).
 
 export type Forms = [one: string, few: string, many: string];
 
@@ -12,7 +12,7 @@ export function plural(n: number, [one, few, many]: Forms): string {
 
 export const withNoun = (n: number, forms: Forms) => `${n} ${plural(n, forms)}`;
 
-/** «два», «три», «четыре» для мужского рода (цветка, фонарика). */
+/** "два", "три", "четыре" (two, three, four) in the masculine gender (for цветок, фонарик). */
 export const SMALL_MASC: Record<number, string> = { 1: 'один', 2: 'два', 3: 'три', 4: 'четыре' };
 
 export const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);

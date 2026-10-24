@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Тесты гоняются на production-сборке (vite preview).
+// Tests run against the production build (vite preview).
 export default defineConfig({
   testDir: './tests',
   timeout: 90_000,

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { QuestionDef } from '../types/game';
 
-// Шина событий между игровой сценой (Phaser) и интерфейсом (React).
+// Event bus between the game scene (Phaser) and the interface (React).
 
 export interface HudState {
   levelId: number;
@@ -12,7 +12,7 @@ export interface HudState {
 
 export interface QuestionOpenEvent {
   stationId: string;
-  /** Кто задаёт вопрос — для картинки в карточке. */
+  /** Who asks the question — for the picture on the card. */
   npc?: string;
   question: QuestionDef;
   index: number;
@@ -22,7 +22,7 @@ export interface QuestionOpenEvent {
 export interface ToastEvent {
   text: string;
   emoji?: string;
-  /** Английское слово для озвучки. */
+  /** English word for voice-over. */
   word?: string;
   kind?: 'info' | 'success' | 'hint';
 }

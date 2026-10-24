@@ -50,7 +50,7 @@ test.describe('Сохранения и переходы', () => {
     await page.getByTestId('collection').click();
     await expect(page.getByTestId('reward-golden-bulb')).toContainText('Золотая лампочка');
     await expect(page.getByTestId('shards-panel')).toContainText('0 из 8');
-    // Первая же запись сохраняет данные уже в формате v2, старые поля на месте.
+    // The first write saves data in v2 format, with the old fields intact.
     await page.getByTestId('toggle-music').click();
     const s = await saved(page);
     expect(s.version).toBe(2);
@@ -71,7 +71,7 @@ test.describe('Сохранения и переходы', () => {
     await expect(page.getByTestId('chapter-intro')).toContainText('В поисках утраченного света');
     await page.getByTestId('start-level').click();
     await expect.poll(async () => (await state(page)).levelId).toBe(5);
-    // Вступление главы показывается один раз.
+    // The chapter intro is shown once.
     await page.reload();
     await startLevel(page, 5);
     await expect(page.getByTestId('chapter-intro')).toBeHidden();
@@ -91,7 +91,7 @@ test.describe('Глава 2 целиком', () => {
         await expect.poll(async () => (await state(page)).levelId).toBe(id);
         await expect.poll(async () => (await state(page)).modal).toBe(false);
       }
-      // В каждом уровне сначала ошибаемся — игра не должна блокироваться.
+      // At every level we first make a mistake — the game must not get blocked.
       await playThrough(page, true);
       if (id < 12) {
         await expect(page.getByTestId(`complete-reward-shard-${id - 4}`)).toBeVisible();
@@ -108,7 +108,7 @@ test.describe('Глава 2 целиком', () => {
       expect(s.skillStats[skill].solved, skill).toBeGreaterThan(0);
       expect(s.skillStats[skill].hints, skill).toBeGreaterThan(0);
     }
-    // Карта мира: можно переиграть любой уровень.
+    // World map: any level can be replayed.
     await page.getByTestId('complete-levels').click();
     for (const id of [5, 9, 12]) await expect(page.getByTestId(`level-${id}`)).toBeEnabled();
     await page.reload();
@@ -133,13 +133,13 @@ test.describe('Механики второй главы', () => {
       minY = Math.min(minY, (await state(page)).feetY);
       await page.waitForTimeout(50);
     }
-    expect(560 - minY).toBeGreaterThan(200); // обычный прыжок — около 160
+    expect(560 - minY).toBeGreaterThan(200); // a regular jump is about 160
   });
 
   test('ветер мельницы поднимает лампу к высокому острову', async ({ page }) => {
     await startLevel(page, 7);
     await teleport(page, 3390, 640);
-    // Ветер ещё не дует — лампа падает и возвращается на остров с мельницей.
+    // The wind is not blowing yet — the lamp falls and returns to the windmill island.
     await expect.poll(async () => (await state(page)).x, { timeout: 5000 }).toBeLessThan(3000);
     await setFlag(page, 'wind');
     await teleport(page, 3390, 640);
@@ -167,7 +167,7 @@ test.describe('Механики второй главы', () => {
     const ground = await slide(4960);
     const ice = await slide(5230);
     expect(ice).toBeGreaterThan(ground + 15);
-    expect(ice).toBeLessThan(250); // скольжение ограничено и предсказуемо
+    expect(ice).toBeLessThan(250); // the slide is limited and predictable
   });
 
   test('конвейер везёт стоящую лампу', async ({ page }) => {
@@ -183,7 +183,7 @@ test.describe('Механики второй главы', () => {
     await setFlag(page, 'lever');
     await teleport(page, 1830, 200);
     await settle(page);
-    // Полный цикл лифта (вниз и вверх) — до ~9,5 с.
+    // A full lift cycle (down and up) — up to ~9.5 s.
     await expect.poll(async () => (await state(page)).feetY, { timeout: 14_000 }).toBeLessThan(330);
   });
 
@@ -191,7 +191,7 @@ test.describe('Механики второй главы', () => {
     await startLevel(page, 11);
     expect((await state(page)).gravity).toBe(750);
     await settle(page);
-    // Время полёта меряем внутри браузера по кадрам — без задержек тест-раннера.
+    // Measure the flight time inside the browser frame by frame — no test-runner delays.
     await page.keyboard.down('Space');
     const airMs = await page.evaluate(
       () =>
@@ -209,7 +209,7 @@ test.describe('Механики второй главы', () => {
         }),
     );
     await page.keyboard.up('Space');
-    expect(airMs).toBeGreaterThan(1100); // на суше прыжок ~0,9 с
+    expect(airMs).toBeGreaterThan(1100); // on land a jump lasts ~0.9 s
   });
 
   test('робот-помощник выполняет программу и открывает ворота', async ({ page }) => {
@@ -218,7 +218,7 @@ test.describe('Механики второй главы', () => {
     await teleport(page, 2650, 250);
     await answerOpenCard(page, true);
     await expect.poll(() => hasFlag(page, 'button'), { timeout: 10_000 }).toBe(true);
-    // Ворота открыты — проходим вправо.
+    // The gate is open — walk right.
     await teleport(page, 3100, 250);
     await settle(page);
     await page.keyboard.down('ArrowRight');
@@ -233,7 +233,7 @@ test.describe('Механики второй главы', () => {
     const order = (await runtimeQuestion(page, 'l8-order')).order as string[];
     await page.getByTestId(`option-${order[0]}`).click();
     await expect(page.getByTestId('slot-0')).toHaveClass(/filled/);
-    await page.getByTestId(`option-${order[2]}`).click(); // ошибка: перепрыгнули через второй шаг
+    await page.getByTestId(`option-${order[2]}`).click(); // a mistake: skipped over the second step
     await expect(page.getByTestId('q-hint')).toBeVisible();
     await expect(page.getByTestId('slot-0')).toHaveClass(/filled/);
     await expect(page.getByTestId('slot-1')).not.toHaveClass(/filled/);
@@ -281,7 +281,7 @@ test.describe('Управление, пауза, ресурсы', () => {
     await startLevel(page, 8);
     await teleport(page, 1100, 540);
     await expect(page.getByTestId('question-card')).toBeVisible();
-    await expect(page.getByTestId('dpad')).toBeHidden(); // кнопки не перекрывают карточку
+    await expect(page.getByTestId('dpad')).toBeHidden(); // the buttons do not cover the card
     await page.getByTestId('question-close').click();
     await expect(page.getByTestId('dpad')).toBeVisible();
     const s0 = await settle(page);
@@ -298,7 +298,7 @@ test.describe('Управление, пауза, ресурсы', () => {
 
   test('пауза останавливает сцену', async ({ page }) => {
     await startLevel(page, 10);
-    await teleport(page, 700, 300); // в воздухе
+    await teleport(page, 700, 300); // in the air
     await page.getByTestId('pause').click();
     const a = await state(page);
     await page.waitForTimeout(600);

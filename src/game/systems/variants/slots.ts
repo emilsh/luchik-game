@@ -25,10 +25,10 @@ import {
 } from './builders';
 import { NOUNS, plural } from './ru';
 
-// Слот = id задания на станции уровня. Награда и эффект в мире (мост, ворота,
-// лифт) привязаны к слоту и не меняются; содержимое задания собирается заново
-// на каждое прохождение. Потолки чисел: глава 1 — до 10, уровни 5–6 и 10–11 — до 15,
-// остальные уровни главы 2 — до 20.
+// Slot = the id of a task at a level station. The reward and the effect in the world (bridge, gate,
+// lift) are tied to the slot and do not change; the task content is rebuilt
+// on every playthrough. Number ceilings: chapter 1 — up to 10, levels 5–6 and 10–11 — up to 15,
+// the other chapter 2 levels — up to 20.
 
 export type Generator = (ctx: Ctx) => Variant;
 
@@ -36,14 +36,14 @@ const resultOf = (ctx: Ctx, id: string) => ctx.resolved[id]?.meta?.result;
 const targetsOf = (ctx: Ctx, ids: string[]) =>
   ids.map((id) => ctx.resolved[id]?.meta?.target).filter((t): t is string => !!t);
 
-// Слова, которые ребёнок уже видел на табличках к моменту вопроса.
+// Words the child has already seen on signs by the time of the question.
 const L3_FIRST = ['CAT', 'DOG', 'SUN', 'STAR'];
 const L3_UPPER = [...L3_FIRST, 'MOON', 'FISH', 'APPLE', 'BOOK'];
 const L3_ALL = [...L3_UPPER, 'TREE'];
 const SEA = ['FISH', 'SHELL', 'BOAT', 'STAR', 'KEY', 'WATER'];
 
 export const SLOTS: Record<string, Generator> = {
-  // ---------- Глава 1 ----------
+  // ---------- Chapter 1 ----------
   'l1-sign': (c) => storyQ(c, { bank: SIGN_NOTES }),
   'l1-snail-why': (c) => storyQ(c, { bank: SNAIL_STORIES }),
   'l1-snail-where': (c) => storyQ(c, { bank: SNAIL_STORIES, sameAs: 'l1-snail-why' }),
@@ -83,16 +83,16 @@ export const SLOTS: Record<string, Generator> = {
   'l4-read': (c) => instructionQ(c),
   'l4-math': (c) =>
     arithQ(c, { op: '+', max: 10, nouns: [NOUNS.spark], frame: (a, b) => `Машине нужны искры. Сколько будет ${a} + ${b}?` }),
-  // Рубильник открывается именно ключом — слово KEY не меняется, меняются соседи и места.
+  // The switch is opened specifically by a key — the word KEY does not change; the neighbors and positions do.
   'l4-find-key': (c) => findWordQ(c, { targets: ['KEY'], pool: ['FISH', 'BOOK', 'CAT', 'DOG', 'APPLE', 'STAR', 'MOON', 'TREE'] }),
 
-  // ---------- Глава 2 ----------
+  // ---------- Chapter 2 ----------
   'l5-why': (c) => storyQ(c, { bank: FIREFLY_STORIES }),
   'l5-name': (c) => storyQ(c, { bank: FIREFLY_STORIES, sameAs: 'l5-why' }),
   'l5-home': (c) => homeDescQ(c),
   'l5-count': (c) =>
     countQ(c, { nouns: [NOUNS.lantern, NOUNS.mushroom], ranges: { 1: [6, 9], 2: [8, 12], 3: [10, 13] }, max: 13 }),
-  // Сосчитанные фонарики — это те, что уже горят: число переходит в следующую задачу.
+  // The counted lanterns are the ones already lit: the number carries over into the next problem.
   'l5-add': (c) =>
     arithQ(c, {
       op: '+',
@@ -159,7 +159,7 @@ export const SLOTS: Record<string, Generator> = {
     }),
   'l10-gate-a': (c) =>
     arithQ(c, { op: '+', max: 12, nouns: [NOUNS.fire], frame: (a, b) => `Ворота заморожены. Первый шаг: ${a} + ${b}` }),
-  // Второй шаг продолжает первый: из полученного числа вычитаем.
+  // The second step continues the first: we subtract from the resulting number.
   'l10-gate-b': (c) =>
     arithQ(c, {
       op: '-',
@@ -175,7 +175,7 @@ export const SLOTS: Record<string, Generator> = {
     pictureToWordQ(c, { targets: ['WATER', 'SHELL', 'BOAT', 'FISH'], pool: SEA, avoid: targetsOf(c, ['l11-fish']) }),
   'l11-blue': (c) => colorQ(c),
   'l11-key': (c) => keyDescQ(c),
-  // Первое число — пять жемчужин, которые ребёнок собрал на уровне.
+  // The first number is five pearls, which the child collected on the level.
   'l11-pearls': (c) =>
     arithQ(c, {
       op: '+',

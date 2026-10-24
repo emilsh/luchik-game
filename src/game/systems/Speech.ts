@@ -1,4 +1,4 @@
-// Озвучка через Web Speech API. Если её нет — функции просто ничего не делают.
+// Voice-over via the Web Speech API. If it is unavailable, the functions simply do nothing.
 
 function synth(): SpeechSynthesis | null {
   try {
@@ -34,7 +34,7 @@ function say(text: string, lang: string, rate: number): void {
 
 export const speechAvailable = (): boolean => synth() !== null;
 
-/** Английское слово в нижнем регистре, чтобы его не читали по буквам. */
+/** English word in lowercase so it is not spelled out letter by letter. */
 export function speakEnglish(word: string): void {
   say(word.toLowerCase(), 'en-US', 0.8);
 }
@@ -43,7 +43,7 @@ export function speakRussian(text: string): void {
   say(text, 'ru-RU', 0.95);
 }
 
-/** iOS разрешает речь только после жеста — «прогреваем» её пустой фразой. */
+/** iOS allows speech only after a gesture — "warm it up" with an empty phrase. */
 export function unlockSpeech(): void {
   const s = synth();
   if (!s || typeof SpeechSynthesisUtterance === 'undefined') return;

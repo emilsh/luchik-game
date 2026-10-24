@@ -5,13 +5,13 @@ import type { RewardId, SaveData, Settings, SkillType } from '../../types/game';
 type Listener = () => void;
 
 export interface CompletionResult {
-  /** Награды, полученные впервые в этом прохождении. */
+  /** Rewards received for the first time in this playthrough. */
   newRewards: RewardId[];
   unlockedLevel: number | null;
   bestStars: number;
 }
 
-/** Единственная точка изменения сохранения. React подписывается через subscribe/getSnapshot. */
+/** The only place that changes the save. React subscribes via subscribe/getSnapshot. */
 class ProgressManager {
   private data: SaveData = loadSave();
   private listeners = new Set<Listener>();
@@ -83,14 +83,14 @@ class ProgressManager {
     });
   }
 
-  /** Итог задания для подбора сложности: решено с первой попытки или нет. */
+  /** Task outcome for difficulty tuning: solved on the first try or not. */
   recordMastery(skill: SkillType, firstTry: boolean): void {
     this.update((d) => {
       d.mastery[skill] = [...d.mastery[skill], firstTry ? 1 : 0].slice(-MASTERY_WINDOW);
     });
   }
 
-  /** Запоминает варианты заданий, выпавшие в этом прохождении. */
+  /** Remembers the task variants drawn in this playthrough. */
   recordVariants(variants: Record<string, string>): void {
     if (Object.keys(variants).length === 0) return;
     this.update((d) => {
@@ -117,7 +117,7 @@ class ProgressManager {
   reset(): void {
     clearSave();
     const settings = this.data.settings;
-    // История вариантов сбросом не стирается: после сброса задания тоже не должны повторяться.
+    // The variant history is not erased by a reset: tasks should not repeat after a reset either.
     const history = this.data.variantHistory;
     this.data = defaultSave();
     this.data.variantHistory = history;

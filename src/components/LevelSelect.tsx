@@ -7,7 +7,7 @@ import { getLevel } from '../game/levels';
 import { THEMES } from '../game/world/themes';
 import { BackButton, MenuSky, SoundToggles, SpriteImg } from './common';
 
-/** Ряд из восьми осколков Кристалла Света: найденные светятся. */
+/** Row of eight Crystal of Light shards: the found ones glow. */
 export function ShardRow({ found, size = 34 }: { found: string[]; size?: number }) {
   return (
     <div className="shard-row" data-testid="shard-row" aria-label={`Осколков найдено: ${SHARD_IDS.filter((s) => found.includes(s)).length} из 8`}>
@@ -20,7 +20,7 @@ export function ShardRow({ found, size = 34 }: { found: string[]; size?: number 
   );
 }
 
-/** Карта мира: главы как вкладки, уровни — точки на извилистой дорожке. */
+/** World map: chapters as tabs, levels as points on a winding path. */
 export function LevelSelect({ go }: { go: (s: Screen) => void }) {
   const save = useProgress();
   const [chapterId, setChapterId] = useState(() => chapterOf(save.currentLevel).id);
@@ -65,7 +65,7 @@ export function LevelSelect({ go }: { go: (s: Screen) => void }) {
           const best = save.bestStars[String(id)];
           const current = unlocked && !done && id === Math.max(...save.unlockedLevels);
           const row = Math.floor(i / perRow);
-          // Змейка: чётные ряды слева направо, нечётные — справа налево.
+          // Snake layout: even rows go left to right, odd rows right to left.
           const col = row % 2 === 0 ? i % perRow : perRow - 1 - (i % perRow);
           return (
             <button

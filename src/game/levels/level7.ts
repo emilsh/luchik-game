@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 7. Небесные острова: закономерности и маршруты.
-// Новые механики — восходящий поток ветра (включается мельницей) и облако-лифт.
+// 7. Sky Islands: patterns and routes.
+// New mechanics — an updraft (turned on by the windmill) and a cloud lift.
 export const level7: LevelDef = {
   id: 7,
   chapter: 2,
@@ -17,22 +17,22 @@ export const level7: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1000 },
     { x: 500, y: 500, w: 160, kind: 'ledge' },
-    // Облачный мостик после первой загадки
+    // Cloud bridge after the first riddle
     { x: 1080, y: 560, w: 140, kind: 'cloud', showWhen: 'seq' },
     { x: 1300, y: 520, w: 140, kind: 'cloud', showWhen: 'seq' },
     { x: 1520, y: 560, w: 140, kind: 'cloud', showWhen: 'seq' },
     { x: 1720, y: 560, w: 600, kind: 'island' },
-    // Плывущее облако
+    // Drifting cloud
     { x: 2380, y: 520, w: 140, kind: 'cloud', move: { dx: 200, speed: 70 } },
     { x: 2780, y: 520, w: 500, kind: 'island' },
-    // Высокий остров — только с ветром
+    // High island — only with the wind
     { x: 3500, y: 300, w: 600, kind: 'island' },
-    // Радужный мост после маршрута
+    // Rainbow bridge after the route
     { x: 4150, y: 320, w: 150, kind: 'cloud', showWhen: 'route' },
     { x: 4380, y: 360, w: 150, kind: 'cloud', showWhen: 'route' },
     { x: 4600, y: 420, w: 700, kind: 'island' },
     { x: 5450, y: 520, w: 500, kind: 'island' },
-    // Облако-лифт
+    // Cloud lift
     { x: 6020, y: 380, w: 150, kind: 'cloud', move: { dy: 140, speed: 50 } },
     { x: 6250, y: 400, w: 1350 },
   ],

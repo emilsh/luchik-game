@@ -3,8 +3,8 @@ import { PHYS } from './config';
 import { BootScene, BOOTED_EVENT } from './scenes/BootScene';
 import { LevelScene } from './scenes/LevelScene';
 
-// Один экземпляр Phaser.Game на всё приложение: WebGL-контекст не пересоздаётся
-// при каждом входе в уровень (Safari ограничивает их число).
+// A single Phaser.Game instance for the whole app: the WebGL context is not recreated
+// on every level entry (Safari limits their number).
 
 let game: Phaser.Game | null = null;
 let booted: Promise<void> | null = null;
@@ -29,7 +29,7 @@ export function mountGame(container: HTMLElement): void {
       parent: container,
       backgroundColor: '#7ec8f5',
       banner: false,
-      // Канвас рендерится в физических пикселях, а показывается в CSS-размере.
+      // The canvas is rendered in physical pixels but displayed at CSS size.
       scale: { mode: Phaser.Scale.NONE, width: w * ratio, height: h * ratio, zoom: 1 / ratio },
       physics: { default: 'arcade', arcade: { gravity: { x: 0, y: PHYS.gravity }, debug: false } },
       input: { keyboard: false, mouse: false, touch: false, gamepad: false },

@@ -3,13 +3,13 @@ import { input } from '../game/systems/InputController';
 
 type Dir = 'left' | 'right' | null;
 
-/** Насколько палец может уйти за край кнопок, прежде чем движение остановится. */
+/** How far a finger may slide past the edge of the buttons before movement stops. */
 const SLOP = 48;
 
 /**
- * Сенсорное управление. Левая и правая кнопки — одна зона: палец можно
- * переводить с одной на другую не отрывая. Каждый палец (pointerId)
- * учитывается отдельно, поэтому движение и прыжок работают одновременно.
+ * Touch controls. The left and right buttons are one zone: a finger can
+ * slide from one to the other without lifting. Each finger (pointerId)
+ * is tracked separately, so movement and jumping work at the same time.
  */
 export function TouchControls({ visible }: { visible: boolean }) {
   const padRef = useRef<HTMLDivElement>(null);
@@ -53,7 +53,7 @@ export function TouchControls({ visible }: { visible: boolean }) {
     try {
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
     } catch {
-      // Указатель мог уже исчезнуть — не страшно.
+      // The pointer may already be gone — not a problem.
     }
   };
 

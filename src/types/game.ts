@@ -1,4 +1,4 @@
-// Общие типы Lamp Quest: задания, уровни, сохранение.
+// Shared Lamp Quest types: tasks, levels, saves.
 
 export type SkillType =
   | 'reading'
@@ -29,84 +29,84 @@ export const SKILLS: SkillType[] = [
 
 export interface AnswerOption {
   id: string;
-  /** Подпись (число, слово или короткая фраза). */
+  /** Label (a number, a word, or a short phrase). */
   label?: string;
-  /** Картинка-эмодзи. */
+  /** Emoji picture. */
   emoji?: string;
-  /** Количество точек под числом — визуальная поддержка для сравнения. */
+  /** Number of dots under a number — visual support for comparison. */
   dots?: number;
 }
 
 export type QuestionVisual =
   | { kind: 'count'; emoji: string; count: number }
-  /** unknown: 'b' — пропущено второе число («3 + ? = 7»). */
+  /** unknown: 'b' — the second number is missing ("3 + ? = 7"). */
   | { kind: 'equation'; a: number; b: number; op: '+' | '-'; emoji: string; unknown?: 'result' | 'b' }
   | { kind: 'word'; word: string }
   | { kind: 'picture'; emoji: string }
   | { kind: 'find'; word?: string; emoji?: string }
-  /** Ряд элементов с «?» в конце — продолжи закономерность. */
+  /** A row of items with a "?" at the end — continue the pattern. */
   | { kind: 'sequence'; items: string[] }
-  /** Индикатор энергии: всего ячеек и сколько тратится по шагам. */
+  /** Energy indicator: total cells and how many are spent per step. */
   | { kind: 'energy'; total: number; steps: { label: string; amount: number }[] }
-  /** Мини-карта: S — старт, G — цель, # — туча, . — небо. */
+  /** Mini-map: S — start, G — goal, # — cloud, . — sky. */
   | { kind: 'grid'; rows: string[] }
-  /** Программа робота на дорожке (для поиска ошибки). */
+  /** A robot program on a track (for bug finding). */
   | { kind: 'code'; track: string; steps: RobotCmd[] };
 
 export type RobotCmd = 'forward' | 'jump';
 
 /**
- * Дорожка робота: R — старт, . — пол, _ — яма, G — цель.
- * «Вперёд» — на 1 клетку, «Прыжок» — на 2 клетки (над ямой).
+ * Robot track: R — start, . — floor, _ — pit, G — goal.
+ * "Forward" — 1 cell, "Jump" — 2 cells (over a pit).
  */
 export interface ProgramDef {
   track: string;
   slots: number;
-  /** Одна из верных программ (для подсказки и тестов). */
+  /** One of the valid programs (for hints and tests). */
   solution: RobotCmd[];
 }
 
 export interface QuestionDef {
   id: string;
   skill: SkillType;
-  /** Короткий текст вопроса. */
+  /** Short question text. */
   prompt: string;
-  /** Текст для чтения (история или инструкция), показывается над вопросом. */
+  /** Text to read (a story or instruction), shown above the question. */
   story?: string[];
   visual?: QuestionVisual;
-  /** Английское слово для озвучки. */
+  /** English word for voice-over. */
   word?: string;
   options: AnswerOption[];
-  /** Верный вариант (для режима выбора). */
+  /** The correct option (for choice mode). */
   correct: string;
-  /** Режим «расставь по порядку»: верный порядок id вариантов. */
+  /** "Put in order" mode: the correct order of option ids. */
   order?: string[];
-  /** Режим «составь программу»: варианты — команды палитры. */
+  /** "Build a program" mode: the options are palette commands. */
   program?: ProgramDef;
-  /** Дружелюбная подсказка после неверного ответа. */
+  /** A friendly hint after a wrong answer. */
   hint: string;
-  /** Объяснение после верного ответа. */
+  /** Explanation after a correct answer. */
   explanation: string;
-  /** Что изменится в мире после решения. */
+  /** What will change in the world after solving. */
   reward: string;
-  /** Короткая подпись цели для поиска по описанию («дом светлячка»). */
+  /** Short label of the goal for search by description ("the firefly's home"). */
   findLabel?: string;
-  /** Служебные данные варианта (связь между заданиями, порядок деталей и т. п.). */
+  /** Service data of the variant (links between tasks, the order of parts, etc.). */
   meta?: QuestionMeta;
 }
 
 export interface QuestionMeta {
-  /** Ключ варианта — чтобы не повторять его в следующих прохождениях. */
+  /** Variant key — so it is not repeated in later playthroughs. */
   variant?: string;
-  /** Ключ истории, общей для нескольких вопросов одной станции. */
+  /** Key of a story shared by several questions of one station. */
   storyKey?: string;
-  /** Числовой результат — для связанных заданий. */
+  /** Numeric result — for linked tasks. */
   result?: number;
-  /** Порядок деталей машины (уровень 4). */
+  /** Order of the machine's parts (level 4). */
   partsOrder?: string[];
-  /** Целевое слово — чтобы соседние вопросы не спрашивали одно и то же. */
+  /** Target word — so neighboring questions don't ask about the same thing. */
   target?: string;
-  /** Уровень сложности, с которым создано задание. */
+  /** Difficulty tier the task was created with. */
   tier?: number;
 }
 
@@ -116,11 +116,11 @@ export interface QuestionRuntimeState {
   status: QuestionStatus;
   attempts: number;
   hints: number;
-  /** Верный ответ, которым ребёнок решил задание (например, его программа для робота). */
+  /** The correct answer the child solved the task with (for example, their robot program). */
   answer?: string;
 }
 
-// ---------- Уровни ----------
+// ---------- Levels ----------
 
 export type ThemeId =
   | 'valley'
@@ -144,66 +144,66 @@ export type PlatformKind =
   | 'mushroom'
   | 'crystal'
   | 'shelf'
-  /** Гриб-батут: подбрасывает лампу. */
+  /** Trampoline mushroom: launches the lamp. */
   | 'bouncy'
-  /** Скользкий лёд: лампа разгоняется и тормозит мягче. */
+  /** Slippery ice: the lamp accelerates and brakes more softly. */
   | 'ice'
-  /** Конвейер: плавно везёт стоящую лампу. */
+  /** Conveyor: gently carries a standing lamp. */
   | 'conveyor'
-  /** Твёрдый парящий блок (сталкивается со всех сторон, бывает потолком). */
+  /** Solid floating block (collides from all sides, can be a ceiling). */
   | 'block'
-  /** Полка с книгами. */
+  /** Shelf with books. */
   | 'books'
-  /** Парящий остров. */
+  /** Floating island. */
   | 'island';
 
 export interface PlatformDef {
   x: number;
   y: number;
   w: number;
-  /** Высота; по умолчанию у земли — до низа мира, у остальных — 28. */
+  /** Height; by default for ground — down to the bottom of the world, for the others — 28. */
   h?: number;
   kind?: PlatformKind;
-  /** Платформа появляется, когда установлен флаг. */
+  /** The platform appears when the flag is set. */
   showWhen?: string;
-  /** Плавно ездит туда-обратно на dx (вправо) или dy (вниз) пикселей. */
+  /** Moves back and forth smoothly by dx (right) or dy (down) pixels. */
   move?: { dx?: number; dy?: number; speed: number };
-  /** Скорость подброса для батута (по умолчанию 980). */
+  /** Launch speed for a trampoline (980 by default). */
   bounce?: number;
-  /** Скорость конвейера, px/s (минус — влево). */
+  /** Conveyor speed, px/s (negative — left). */
   conveyor?: number;
 }
 
-/** Восходящий поток воздуха или пузырей: поднимает лампу до top. */
+/** Upward current of air or bubbles: lifts the lamp up to top. */
 export interface WindDef {
   x: number;
   w: number;
-  /** Нижняя граница потока (обычно поверхность земли). */
+  /** Lower bound of the current (usually the ground surface). */
   bottom: number;
-  /** До какой высоты поднимает. */
+  /** The height it lifts to. */
   top: number;
-  /** Поток работает только после флага. */
+  /** The current works only after a flag. */
   activeWhen?: string;
 }
 
-/** Декоративный объект уровня (мельница, маяк, кристалл…). */
+/** A decorative level object (windmill, lighthouse, crystal…). */
 export interface DecorDef {
   key: string;
   x: number;
-  /** Низ объекта. */
+  /** Bottom of the object. */
   y: number;
   scale?: number;
-  /** Вращение, градусов в секунду (для лопастей мельницы). */
+  /** Rotation, degrees per second (for windmill blades). */
   spin?: number;
-  /** Вращение начинается только после флага. */
+  /** Rotation starts only after a flag. */
   spinWhen?: string;
-  /** Нарисовать перед платформами. */
+  /** Draw in front of the platforms. */
   front?: boolean;
-  /** Имя для финальной сцены. */
+  /** Name for the final scene. */
   role?: 'finale';
 }
 
-/** Помощник, который проходит маршрут после флага и сам ставит флаг в конце. */
+/** A helper that walks a route after a flag and sets a flag itself at the end. */
 export interface HelperDef {
   id: string;
   x: number;
@@ -212,8 +212,8 @@ export interface HelperDef {
   path: { x: number; y: number; jump?: boolean }[];
   doneFlag: string;
   /**
-   * Задание-программа: робот повторяет в мире программу, которую составил ребёнок.
-   * Старт дорожки — в x помощника, флажок — в последней точке path.
+   * Program task: the robot repeats in the world the program the child built.
+   * The track starts at the helper's x, the flag is at the last point of path.
    */
   fromProgram?: string;
 }
@@ -240,13 +240,13 @@ export interface ItemDef {
   kind: ItemKind;
   x: number;
   y: number;
-  /** Текст всплывающего сообщения при подборе. */
+  /** Text of the pop-up message on pickup. */
   label: string;
 }
 
 export interface CheckpointDef {
   x: number;
-  /** Верх поверхности, на которой стоит фонарик. */
+  /** Top of the surface the lantern stands on. */
   y: number;
 }
 
@@ -256,9 +256,9 @@ export interface GateDef {
   id: string;
   kind: GateKind;
   x: number;
-  /** Верх поверхности, на которой стоят ворота. */
+  /** Top of the surface the gate stands on. */
   y: number;
-  /** Ворота исчезают, когда установлен флаг. */
+  /** The gate disappears when the flag is set. */
   openWhen: string;
 }
 
@@ -279,11 +279,11 @@ export type NpcKind =
 interface StationBase {
   id: string;
   x: number;
-  /** Верх поверхности, на которой стоит объект. */
+  /** Top of the surface the object stands on. */
   y: number;
 }
 
-/** Персонаж или предмет с одним или несколькими заданиями подряд. */
+/** A character or item with one or several tasks in a row. */
 export interface QuestStation extends StationBase {
   type: 'quest';
   npc: NpcKind;
@@ -292,7 +292,7 @@ export interface QuestStation extends StationBase {
   requiresText?: string;
 }
 
-/** Замок / рычаг: срабатывает, если у игрока есть нужные флаги. */
+/** Lock / lever: triggers if the player has the required flags. */
 export interface LockStation extends StationBase {
   type: 'lock';
   npc: NpcKind | 'keyhole';
@@ -301,24 +301,24 @@ export interface LockStation extends StationBase {
   doneText: string;
 }
 
-/** Учебная табличка с английским словом. */
+/** An educational sign with an English word. */
 export interface WordStation extends StationBase {
   type: 'word';
   word: string;
 }
 
-/** Поиск предмета в мире по английскому слову. */
+/** Finding an item in the world by an English word. */
 export interface FindStation extends StationBase {
   type: 'find';
   npc: NpcKind;
   question: string;
-  /** Позиции постаментов; порядок совпадает с вариантами ответа. */
+  /** Pedestal positions; the order matches the answer options. */
   pedestals: { x: number; y: number }[];
-  /** Вид постаментов: каменные (по умолчанию) или просто место на земле. */
+  /** Pedestal style: stone (default) or just a spot on the ground. */
   pedestalStyle?: 'stone' | 'ground';
 }
 
-/** Обучающая подсказка, всплывающая один раз. */
+/** An educational hint that pops up once. */
 export interface HintStation extends StationBase {
   type: 'hint';
   text: string;
@@ -330,9 +330,9 @@ export type StationDef = QuestStation | LockStation | WordStation | FindStation 
 export interface GoalDef {
   text: string;
   emoji: string;
-  /** К тексту добавляется английское слово из этого задания (оно меняется от прохождения к прохождению). */
+  /** The English word from this task is appended to the text (it changes from playthrough to playthrough). */
   question?: string;
-  /** Цель выполнена, когда установлены все флаги. */
+  /** The goal is done when all flags are set. */
   done: string[];
 }
 
@@ -352,11 +352,11 @@ export type RewardId =
   | 'light-crystal';
 
 export interface LevelPhysics {
-  /** Множитель гравитации (под водой меньше 1). */
+  /** Gravity multiplier (below 1 underwater). */
   gravityScale?: number;
-  /** Множитель скорости прыжка. */
+  /** Jump speed multiplier. */
   jumpScale?: number;
-  /** Множитель максимальной скорости падения. */
+  /** Maximum fall speed multiplier. */
   fallScale?: number;
 }
 
@@ -379,13 +379,13 @@ export interface LevelDef {
   goals: GoalDef[];
   portal: { x: number; y: number; requires: string[] };
   reward: RewardId;
-  /** Дополнительные награды (финал главы даёт и фрагмент, и кристалл). */
+  /** Extra rewards (the end of a chapter gives both a shard and a crystal). */
   extraRewards?: RewardId[];
-  /** Флаг, запускающий финальную сцену восстановления света. */
+  /** Flag that triggers the final light-restoration scene. */
   finaleFlag?: string;
-  /** Текст финальной сцены уровня. */
+  /** Text of the level's final scene. */
   finaleText?: string;
-  /** Портрет персонажа во вступлении (ключ спрайта). */
+  /** Portrait of the character in the intro (sprite key). */
   portrait?: string;
   winds?: WindDef[];
   helpers?: HelperDef[];
@@ -393,7 +393,7 @@ export interface LevelDef {
   physics?: LevelPhysics;
 }
 
-// ---------- Сохранение ----------
+// ---------- Saving ----------
 
 export interface SkillStats {
   seen: number;
@@ -404,7 +404,7 @@ export interface SkillStats {
 export interface Settings {
   sound: boolean;
   music: boolean;
-  /** Озвучивать русский текст заданий (помощь в чтении). */
+  /** Read Russian task text aloud (reading help). */
   readAloud: boolean;
 }
 
@@ -419,10 +419,10 @@ export interface SaveData {
   currentLevel: number;
   settings: Settings;
   tutorialSeen: boolean;
-  /** Главы, вступление к которым уже показано. */
+  /** Chapters whose intro has already been shown. */
   chapterIntrosSeen: number[];
-  /** Последние ответы по навыкам: 1 — с первой попытки, 0 — с подсказкой. */
+  /** Latest answers per skill: 1 — on the first try, 0 — with a hint. */
   mastery: Record<SkillType, number[]>;
-  /** Недавние варианты каждого задания — чтобы не повторяться. */
+  /** Recent variants of each task — to avoid repeats. */
   variantHistory: Record<string, string[]>;
 }

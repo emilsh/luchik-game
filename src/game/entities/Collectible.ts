@@ -4,7 +4,7 @@ import { addSprite } from '../art/textures';
 import type { ItemDef } from '../../types/game';
 import { DEPTH } from '../world/background';
 
-/** Звезда или предмет (ключ, шестерёнка, пружина, лампочка). */
+/** A star or an item (key, gear, spring, bulb). */
 export class Collectible {
   readonly img: Phaser.GameObjects.Image;
   private glow: Phaser.GameObjects.Image;

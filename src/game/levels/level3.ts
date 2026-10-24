@@ -1,7 +1,7 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// Английский лес: таблички со словами, Сова и поиск предмета по слову.
+// English Forest: word signs, the Owl, and finding an object by its word.
 export const level3: LevelDef = {
   id: 3,
   chapter: 1,
@@ -14,7 +14,7 @@ export const level3: LevelDef = {
   intro: LEVEL_INTROS[3],
   platforms: [
     { x: 0, y: 600, w: 1640 },
-    // Волшебные грибы к обрыву
+    // Magic mushrooms to the cliff
     { x: 1440, y: 495, w: 110, kind: 'mushroom', showWhen: 'owl1:0' },
     { x: 1530, y: 420, w: 110, kind: 'mushroom', showWhen: 'owl1:1' },
     { x: 1640, y: 330, w: 1300 },
@@ -22,7 +22,7 @@ export const level3: LevelDef = {
     { x: 2500, y: 225, w: 160, kind: 'ledge' },
     { x: 2940, y: 600, w: 700 },
     { x: 3800, y: 600, w: 1500 },
-    // Кристальный мостик
+    // Crystal bridge
     { x: 5360, y: 540, w: 140, kind: 'crystal', showWhen: 'owl2:0' },
     { x: 5560, y: 480, w: 140, kind: 'crystal', showWhen: 'owl2:0' },
     { x: 5770, y: 530, w: 160, kind: 'crystal', showWhen: 'owl2:1' },

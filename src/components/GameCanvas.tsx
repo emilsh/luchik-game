@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { mountGame, startLevel, unmountGame } from '../game/gameHost';
 
-/** Контейнер для канваса Phaser. Сама игра живёт в gameHost и переиспользуется. */
+/** Container for the Phaser canvas. The game itself lives in gameHost and is reused. */
 export function GameCanvas({ levelId, runId }: { levelId: number; runId: number }) {
   const ref = useRef<HTMLDivElement>(null);
 

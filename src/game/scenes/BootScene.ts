@@ -3,7 +3,7 @@ import { loadTextures } from '../art/textures';
 
 export const BOOTED_EVENT = 'lq-booted';
 
-/** Готовит все текстуры один раз при запуске игры. */
+/** Prepares all textures once when the game starts. */
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('Boot');

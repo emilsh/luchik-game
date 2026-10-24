@@ -1,7 +1,7 @@
 import type { QuestionDef } from '../types/game';
 import { vocab } from './vocabulary';
 
-// Задания второй главы «В поисках утраченного света» (уровни 5–12).
+// Chapter 2 tasks "In Search of the Lost Light" (levels 5–12).
 
 const nums = (values: number[]) => values.map((v) => ({ id: String(v), label: String(v) }));
 const pics = (words: string[]) => words.map((w) => ({ id: w, emoji: vocab(w).emoji }));
@@ -14,7 +14,7 @@ const FIREFLY_STORY = [
 ];
 
 export const CHAPTER2_QUESTIONS: QuestionDef[] = [
-  // ---------- 5. Зачарованный лес ----------
+  // ---------- 5. Enchanted Forest ----------
   {
     id: 'l5-why',
     skill: 'reading',
@@ -85,7 +85,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Фонари леса зажглись!',
   },
 
-  // ---------- 6. Кристальная пещера ----------
+  // ---------- 6. Crystal Cave ----------
   {
     id: 'l6-add',
     skill: 'addition',
@@ -137,7 +137,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Древний механизм запущен!',
   },
 
-  // ---------- 7. Небесные острова ----------
+  // ---------- 7. Sky Islands ----------
   {
     id: 'l7-seq',
     skill: 'patterns',
@@ -180,7 +180,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Облачный мост к последнему острову!',
   },
 
-  // ---------- 8. Библиотека времени ----------
+  // ---------- 8. Library of Time ----------
   {
     id: 'l8-order',
     skill: 'story-order',
@@ -246,7 +246,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Страницы истории вернулись!',
   },
 
-  // ---------- 9. Фабрика роботов ----------
+  // ---------- 9. Robot Factory ----------
   {
     id: 'l9-add',
     skill: 'addition',
@@ -296,7 +296,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Фабрика снова работает!',
   },
 
-  // ---------- 10. Ледяная гора ----------
+  // ---------- 10. Ice Mountain ----------
   {
     id: 'l10-path',
     skill: 'comparison',
@@ -351,7 +351,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Ворота растаяли!',
   },
 
-  // ---------- 11. Подводный город ----------
+  // ---------- 11. Underwater City ----------
   {
     id: 'l11-fish',
     skill: 'english-word-to-picture',
@@ -421,7 +421,7 @@ export const CHAPTER2_QUESTIONS: QuestionDef[] = [
     reward: 'Подводный город засиял!',
   },
 
-  // ---------- 12. Обсерватория света ----------
+  // ---------- 12. Observatory of Light ----------
   {
     id: 'l12-order',
     skill: 'story-order',

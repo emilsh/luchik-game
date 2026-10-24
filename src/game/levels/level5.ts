@@ -1,8 +1,8 @@
 import type { LevelDef } from '../../types/game';
 import { LEVEL_INTROS } from '../../data/stories';
 
-// 5. Зачарованный лес: чтение историй, поиск по описанию, счёт до 15.
-// Новая механика — грибы-батуты.
+// 5. Enchanted Forest: reading stories, finding by description, counting to 15.
+// New mechanic — trampoline mushrooms.
 export const level5: LevelDef = {
   id: 5,
   chapter: 2,
@@ -17,11 +17,11 @@ export const level5: LevelDef = {
   platforms: [
     { x: 0, y: 600, w: 1300 },
     { x: 600, y: 500, w: 180, kind: 'ledge' },
-    // Грибы-батуты через овраг появляются после разговора со светлячком
+    // Trampoline mushrooms across the ravine appear after talking to the firefly
     { x: 1390, y: 560, w: 130, kind: 'bouncy', bounce: 900, showWhen: 'firefly' },
     { x: 1560, y: 500, w: 100, kind: 'mushroom', showWhen: 'firefly' },
     { x: 1700, y: 420, w: 1100 },
-    // Секретная тропинка наверху (по желанию)
+    // Secret path up top (optional)
     { x: 2150, y: 400, w: 110, kind: 'bouncy', bounce: 900 },
     { x: 2300, y: 180, w: 200, kind: 'ledge' },
     { x: 2560, y: 170, w: 180, kind: 'ledge' },

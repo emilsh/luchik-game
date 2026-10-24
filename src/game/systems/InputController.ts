@@ -1,6 +1,6 @@
-// Общее состояние управления: клавиатура и сенсорные кнопки пишут сюда,
-// LampPlayer читает. Каждый источник учитывается отдельно, поэтому отпускание
-// одной кнопки не сбрасывает другую.
+// Shared control state: the keyboard and touch buttons write here,
+// LampPlayer reads. Each source is tracked separately, so releasing
+// one button does not reset another.
 
 type MoveSource = 'kbLeft' | 'kbRight' | 'touchLeft' | 'touchRight';
 
@@ -13,7 +13,7 @@ class InputController {
   private jumpSources = new Set<string>();
   private jumpQueuedAt = -Infinity;
   private attached = false;
-  /** Перехватывать ли игровые клавиши (только на игровом экране без открытых окон). */
+  /** Whether to capture game keys (only on the game screen with no windows open). */
   captureKeys = false;
   onPause: (() => void) | null = null;
 
@@ -47,7 +47,7 @@ class InputController {
     this.jumpSources.delete(src);
   }
 
-  /** Буфер прыжка: нажатие чуть раньше приземления тоже засчитывается. */
+  /** Jump buffer: a press slightly before landing also counts. */
   consumeJump(windowMs: number): boolean {
     if (performance.now() - this.jumpQueuedAt <= windowMs) {
       this.jumpQueuedAt = -Infinity;
@@ -80,7 +80,7 @@ class InputController {
       else if (KEY_JUMP.has(e.code)) {
         if (!e.repeat) this.pressJump(`kb:${e.code}`);
       } else return;
-      // Не даём пробелу/стрелкам прокручивать страницу или нажимать кнопку в фокусе.
+      // Don't let Space/arrows scroll the page or press a focused button.
       e.preventDefault();
     });
 
@@ -92,7 +92,7 @@ class InputController {
       if (this.captureKeys) e.preventDefault();
     });
 
-    // Потеря фокуса окна — отпускаем всё, чтобы лампа не «залипла».
+    // Window focus lost — release everything so the lamp doesn't get "stuck".
     window.addEventListener('blur', () => this.reset());
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) this.reset();

@@ -50,7 +50,7 @@ export function GameScreen({ levelId, go }: { levelId: number; go: (s: Screen) =
     progress.setCurrentLevel(levelId);
   }, [levelId]);
 
-  // Клавиши игры перехватываются только во время самой игры.
+  // Game keys are captured only while the game itself is being played.
   useEffect(() => {
     input.captureKeys = phase === 'play';
     if (phase !== 'play') input.reset();
@@ -126,7 +126,7 @@ export function GameScreen({ levelId, go }: { levelId: number; go: (s: Screen) =
     };
   }, []);
 
-  // Подсказка повернуть устройство и автоопределение касаний.
+  // Rotate-device hint and touch auto-detection.
   useEffect(() => {
     const mq = window.matchMedia('(orientation: portrait)');
     const update = () => setPortrait(mq.matches && detectTouch());
@@ -158,7 +158,7 @@ export function GameScreen({ levelId, go }: { levelId: number; go: (s: Screen) =
     setRunId((n) => n + 1);
   };
 
-  // После финала главы 1 тоже предлагаем «Дальше» — в главу 2.
+  // After the end of chapter 1 we also offer "Next" — into chapter 2.
   const nextLevel = levelId < LEVEL_COUNT && complete ? () => go({ name: 'game', levelId: levelId + 1 }) : null;
 
   return (

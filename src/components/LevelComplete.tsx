@@ -48,7 +48,7 @@ export function LevelComplete({
   const chapter = CHAPTERS.find((c) => c.levels.includes(level.id)) ?? CHAPTERS[0];
   const isChapterEnd = chapter.levels[chapter.levels.length - 1] === level.id;
   const isChapter2End = isChapterEnd && chapter.id === 2;
-  // Для главы 2 сначала показываем осколок, затем остальные награды.
+  // For chapter 2 show the shard first, then the other rewards.
   const rewards = levelRewards(level).sort((a, b) => Number(b.startsWith('shard')) - Number(a.startsWith('shard')));
 
   return (

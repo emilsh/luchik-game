@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { TEX_RES } from '../config';
 import { SPRITES, svgMarkup, type SpriteDef, type SpriteKey } from './sprites';
 
-// Растеризация SVG-спрайтов в текстуры Phaser в повышенном разрешении,
-// чтобы на Retina-экранах iPad всё оставалось чётким.
+// Rasterizing SVG sprites into Phaser textures at a higher resolution
+// so everything stays sharp on the iPad's Retina screens.
 
 function rasterize(scene: Phaser.Scene, key: string, def: SpriteDef): Promise<void> {
   return new Promise((resolve) => {
@@ -23,7 +23,7 @@ function rasterize(scene: Phaser.Scene, key: string, def: SpriteDef): Promise<vo
       done();
     };
     img.onerror = () => {
-      // Запасной вариант, чтобы игра не сломалась: простой цветной блок.
+      // Fallback so the game does not break: a plain colored block.
       if (ctx) {
         ctx.fillStyle = '#ffb547';
         ctx.fillRect(0, 0, cw, ch);
@@ -83,7 +83,7 @@ function proceduralTextures(scene: Phaser.Scene): void {
     ctx.fill();
   });
 
-  // Мягкий конус света из абажура (вершина слева по центру).
+  // Soft cone of light from the lamp shade (apex at the left, centered).
   canvasTexture(scene, 'cone', 320, 200, (ctx) => {
     ctx.beginPath();
     ctx.moveTo(0, 88);
@@ -100,7 +100,7 @@ function proceduralTextures(scene: Phaser.Scene): void {
     ctx.fillRect(0, 0, 320, 200);
   });
 
-  // Большое мягкое свечение вокруг лампы (для тёмных уровней).
+  // Large soft glow around the lamp (for dark levels).
   canvasTexture(scene, 'halo', 256, 256, (ctx) => {
     const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
     g.addColorStop(0, 'rgba(255,240,190,0.55)');
@@ -110,7 +110,7 @@ function proceduralTextures(scene: Phaser.Scene): void {
   });
 }
 
-/** Вертикальный градиент неба для темы. */
+/** Vertical sky gradient for a theme. */
 export function skyTexture(scene: Phaser.Scene, key: string, top: string, bottom: string): void {
   canvasTexture(scene, key, 8, 512, (ctx) => {
     const g = ctx.createLinearGradient(0, 0, 0, 512);
@@ -128,7 +128,7 @@ export async function loadTextures(scene: Phaser.Scene): Promise<void> {
   );
 }
 
-/** Изображение спрайта в логическом размере; origin по умолчанию — низ по центру. */
+/** Sprite image at logical size; origin defaults to bottom center. */
 export function addSprite(
   scene: Phaser.Scene,
   x: number,

@@ -62,7 +62,7 @@ function shards(): Record<string, RewardDef> {
 
 export const SHARD_IDS = Array.from({ length: 8 }, (_, i) => `shard-${i + 1}` as RewardId);
 
-/** Награды-предметы на полке коллекции (осколки показываются отдельно). */
+/** Reward items on the collection shelf (shards are shown separately). */
 export const REWARD_ORDER: RewardId[] = ['gold-star', 'workshop-gear', 'magic-crystal', 'golden-bulb', 'light-crystal'];
 
 export const ALL_REWARD_IDS = Object.keys(REWARDS) as RewardId[];

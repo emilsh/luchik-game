@@ -4,7 +4,7 @@ import { addSprite, skyTexture } from '../art/textures';
 import type { LevelDef } from '../../types/game';
 import type { Theme } from './themes';
 
-// Фон уровня: небо, дальние и средние планы с параллаксом, декор на земле.
+// Level background: sky, far and middle layers with parallax, decor on the ground.
 
 export const DEPTH = {
   sky: -100,
@@ -40,7 +40,7 @@ function rng(seed: number) {
 export class Backdrop {
   private anchored: Anchored[] = [];
   darkness: Phaser.GameObjects.Rectangle | null = null;
-  /** Огоньки ламп мастерской — загораются в финале. */
+  /** Workshop lamp lights — they turn on in the finale. */
   lampLights: Phaser.GameObjects.Image[] = [];
 
   constructor(
@@ -51,7 +51,7 @@ export class Backdrop {
     this.build();
   }
 
-  /** Привязка объекта к доле экрана (scrollFactor 0 + учёт zoom камеры). */
+  /** Anchoring an object to a fraction of the screen (scrollFactor 0 + accounting for the camera zoom). */
   private anchor(obj: Anchored['obj'], fx: number, fy: number, fill = false) {
     (obj as unknown as Phaser.GameObjects.Components.ScrollFactor).setScrollFactor(0);
     this.anchored.push({ obj, fx, fy, fill });
@@ -126,7 +126,7 @@ export class Backdrop {
     }
   }
 
-  /** Ширина, которую должен покрыть слой с данным коэффициентом параллакса. */
+  /** Width that a layer with the given parallax factor must cover. */
   private span(sf: number): number {
     return this.level.width * sf + 6000;
   }
@@ -289,7 +289,7 @@ export class Backdrop {
     }
   }
 
-  // ---------- Глава 2 ----------
+  // ---------- Chapter 2 ----------
 
   private starfield(count: number, seed: number, maxY = 330): void {
     const g = this.scene.add.graphics().setScrollFactor(0.05, 1).setDepth(DEPTH.sky + 1);
@@ -349,7 +349,7 @@ export class Backdrop {
       .setDepth(DEPTH.decor + 1);
   }
 
-  /** Подвесные лампы, которые загораются в финале уровня. */
+  /** Hanging lamps that turn on in the finale of the level. */
   private hangingLamps(sf: number, step: number): void {
     for (let x = 400; x < this.span(sf); x += step) {
       addSprite(this.scene, x, 0, 'hangLamp', 0.5, 0).setScrollFactor(sf, 1).setDepth(DEPTH.mid + 1);
@@ -547,7 +547,7 @@ export class Backdrop {
     this.hangingLamps(0.7, 900);
   }
 
-  /** Декор на земляных платформах: кусты, цветы, кактусы, светящиеся грибы. */
+  /** Decor on ground platforms: bushes, flowers, cacti, glowing mushrooms. */
   private groundDecor(): void {
     const s = this.scene;
     const r = rng(this.level.id * 101);

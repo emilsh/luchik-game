@@ -3,12 +3,12 @@ import { GROUND_Y, WORLD_H } from '../config';
 import type { PlatformKind } from '../../types/game';
 import type { Theme } from './themes';
 
-// Платформы рисуются на canvas (градиенты, мягкие формы) и режутся на куски,
-// чтобы не превышать лимит размера текстуры на iPad.
+// Platforms are drawn on canvas (gradients, soft shapes) and cut into pieces
+// so as not to exceed the texture size limit on the iPad.
 
 const RES = 2;
 const CHUNK = 1000;
-/** Запас сверху для травинок и перил. */
+/** Headroom for grass blades and railings. */
 export const PAD_TOP = 40;
 
 const hex = (n: number, a = 1) => {
@@ -48,7 +48,7 @@ function drawGround(ctx: CanvasRenderingContext2D, w: number, h: number, t: Them
   rr(ctx, 0, 6, w, h + 40, 14);
   ctx.fill();
 
-  // Края чуть темнее — объём.
+  // Edges slightly darker — volume.
   const edgeL = ctx.createLinearGradient(0, 0, 14, 0);
   edgeL.addColorStop(0, hex(t.groundDark, 0.6));
   edgeL.addColorStop(1, hex(t.groundDark, 0));
@@ -114,7 +114,7 @@ function drawGround(ctx: CanvasRenderingContext2D, w: number, h: number, t: Them
     }
   }
 
-  // Верхний слой: трава / песок / мох / доски.
+  // Top layer: grass / sand / moss / planks.
   ctx.fillStyle = hex(t.groundTop);
   rr(ctx, 0, 0, w, 24, 12);
   ctx.fill();
@@ -154,7 +154,7 @@ function drawGround(ctx: CanvasRenderingContext2D, w: number, h: number, t: Them
   ctx.fill();
 
   if (t.id === 'valley') {
-    // Травинки
+    // Grass blades
     ctx.fillStyle = hex(t.groundTop);
     for (let x = 20; x < w - 20; x += 70 + rand() * 60) {
       for (let k = 0; k < 3; k++) {
@@ -314,7 +314,7 @@ function drawLedge(ctx: CanvasRenderingContext2D, w: number, h: number, t: Theme
   ctx.fillStyle = g;
   rr(ctx, 2, 6, w - 4, h, 12);
   ctx.fill();
-  // Комочки снизу
+  // Lumps below
   for (let x = 18; x < w - 12; x += 26) {
     ctx.beginPath();
     ctx.arc(x, h + 4, 6 + rand() * 5, 0, Math.PI);
@@ -347,7 +347,7 @@ function drawShelf(ctx: CanvasRenderingContext2D, w: number, _h: number, t: Them
     ctx.arc(x, 13, 2.5, 0, Math.PI * 2);
     ctx.fill();
   }
-  // Жёлто-чёрная полоска снизу
+  // Yellow-black stripe below
   ctx.save();
   rr(ctx, 4, 20, w - 8, 8, 3);
   ctx.clip();
@@ -381,7 +381,7 @@ function drawCloud(ctx: CanvasRenderingContext2D, w: number) {
 }
 
 function drawBridge(ctx: CanvasRenderingContext2D, w: number, h: number) {
-  // Перила
+  // Railings
   ctx.strokeStyle = '#7A4A22';
   ctx.lineWidth = 4;
   ctx.beginPath();
@@ -410,7 +410,7 @@ function drawMushroom(ctx: CanvasRenderingContext2D, w: number, stemH: number, b
   rr(ctx, w / 2 - 13, 20, 26, stemH, 10);
   ctx.fill();
   if (bouncy) {
-    // Пружинка на ножке — видно, что гриб подбрасывает.
+    // A spring on the stem — it is visible that the mushroom bounces.
     ctx.strokeStyle = '#8C7CC9';
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -460,8 +460,8 @@ function drawCrystal(ctx: CanvasRenderingContext2D, w: number) {
 let texCounter = 0;
 
 /**
- * Создаёт визуал платформы: контейнер с изображениями-кусками.
- * Координаты контейнера — левый верхний угол поверхности.
+ * Creates a platform visual: a container with image chunks.
+ * Container coordinates are the top-left corner of the surface.
  */
 export function createPlatformVisual(
   scene: Phaser.Scene,
